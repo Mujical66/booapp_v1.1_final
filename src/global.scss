@@ -35,3 +35,65 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+ion-label,
+ion-title,
+ion-button,
+ion-card-title,
+ion-card-subtitle,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Geologica", sans-serif;
+}
+
+
+body {
+  font-family: "Geologica", sans-serif;
+}
+
+/* Estilo personalizado para el alert */
+.custom-alert {
+  --background: var(--color-menu);
+  /* Fondo oscuro */
+  --color: var(--color-info);
+  /* Color del texto principal (blanco) */
+
+  /* Estilo del título (header) */
+  .alert-title {
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: var(--color-buttons) !important;
+    /* Rojo paranormal */
+    text-align: center !important;
+  }
+
+  /* Estilo del subtítulo (subHeader) */
+  .alert-sub-title {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: var(--color-info) !important;
+    /* Naranja */
+    text-align: center !important;
+  }
+
+  /* Estilo del mensaje */
+  .alert-message {
+    font-size: 14px !important;
+    color: #dddddd !important;
+    /* Gris claro */
+    text-align: center !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Estilo de los botones */
+  .alert-button {
+    color: #f39c12 !important;
+    /* Naranja */
+    font-weight: bold !important;
+  }
+}

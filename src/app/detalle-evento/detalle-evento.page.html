@@ -1,0 +1,38 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Detalle del Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+  <div *ngIf="evento as Evento; else noData">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ evento.titulo }}</ion-card-title>
+      </ion-card-header>
+      <img [src]="evento.imagen" [alt]="evento.titulo" />
+
+      <ion-card-content>
+        <p>{{ evento.descripcion }}</p>
+        <h3>Localidad: {{ evento.ubicacion }}</h3>
+        <h3><strong>Creación:</strong> {{ evento.fechaCreacion }}</h3>
+
+        <div class="video-container">
+          <video controls width="100%">
+            <source [src]="evento.video" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="contenedor-boton">
+    <ion-button expand="block" class="boton" [routerLink]="['/tabs']">Volver a Eventos</ion-button>
+  </div>
+
+  <ng-template #noData>
+    <p>No se encontró el evento.</p>
+  </ng-template>
+</ion-content>

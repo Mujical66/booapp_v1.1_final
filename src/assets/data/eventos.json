@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "titulo": "El Silbón",
+    "descripcion": "Joven malcriado que mata a su padre cazador y roba sus vísceras. Su madre lo maldice y su espíritu errante, conocido como El Silbón, aparece en las noches silbando una melodía siniestra. Se dice que su silbido anuncia la muerte o desgracia, y que escuchar su silbido cerca es señal de peligro",
+    "ubicacion": "La Llanada, estado Zulia",
+    "latitud": 9.7500,
+    "longitud": -71.0000,
+    "fechaCreacion": "01/01/2025",
+    "imagen": "https://ik.imagekit.io/sierra/silbon.jpg?updatedAt=1747694864610",
+    "video": "https://ik.imagekit.io/sierra/silbon.mp4?updatedAt=1747694864503"
+  },
+  {
+    "id": 2,
+    "titulo": "La Sayona",
+    "descripcion": "Melisa, una mujer hermosa, descubre supuestas infidelidades de su esposo con su madre y, cegada por los celos, asesina a ambos y a su bebé. Antes de morir, su madre la maldice y la condena a vagar eternamente como La Sayona, un espíritu que se aparece a hombres mujeriegos con aspecto seductor para luego transformarse en una criatura horrenda que los aterroriza o mata",
+    "ubicacion": "Biruaca, estado Apure",
+    "latitud": 7.8167,
+    "longitud": -67.5833,
+    "fechaCreacion": "15/05/2025",
+    "imagen": "https://ik.imagekit.io/sierra/sayona.jpg?updatedAt=1747694857356",
+    "video": "https://ik.imagekit.io/sierra/sayona.mp4?updatedAt=1747694946278"
+  },
+  {
+    "id": 3,
+    "titulo": "María Lionza",
+    "descripcion": "Yara, hija de un cacique, nace con ojos verde agua y debe ser sacrificada a la gran anaconda para evitar una maldición. Su padre la oculta en una cueva, pero ella escapa y se enamora del dios del agua Anaconda. Tras una inundación que destruye la aldea, Yara se convierte en María Lionza, protectora de las aguas, la naturaleza y el amor",
+    "ubicacion": "Cerro Sorte, estado Yaracuy",
+    "latitud": 10.0984,
+    "longitud": -68.3562,
+    "fechaCreacion": "29/01/2025",
+    "imagen": "https://ik.imagekit.io/sierra/maria.jpg?updatedAt=1747694853741",
+    "video": "https://ik.imagekit.io/sierra/maria.mp4?updatedAt=1747695011383"
+  },
+  {
+    "id": 4,
+    "titulo": "La Llorona",
+    "descripcion": "Mujer que ahogó a sus hijos por despecho y ahora vaga llorando junto a ríos y lagos. Se dice que si escuchas su llanto cerca del agua, es una advertencia de muerte inminente.",
+    "ubicacion": "Barinas, Estado Barinas",
+    "latitud": 8.616667,
+    "longitud": -70.216667,
+    "fechaCreacion": "04/04/2025",
+    "imagen": "https://ik.imagekit.io/sierra/llorona.jpg?updatedAt=1747694857741",
+    "video": "https://ik.imagekit.io/sierra/llorona.mp4?updatedAt=1747694900385"
+  },
+  {
+    "id": 5,
+    "titulo": "El Cocodrilo de El Junquito",
+    "descripcion": "Un cocodrilo gigantesco que habría sido avistado en las cercanías de El Junquito, Caracas. Muchos aseguran haberlo visto, otros dicen que es solo una invención popular.",
+    "ubicacion": "El Junquito, Caracas",
+    "latitud": 10.416667,
+    "longitud": -66.883333,
+    "fechaCreacion": "03/04/2025",
+    "imagen": "https://ik.imagekit.io/sierra/cocodrilo.jpg?updatedAt=1747694861203",
+    "video": "https://ik.imagekit.io/sierra/cocodrilo.mp4?updatedAt=1747694892711"
+  },
+  {
+    "id": 6,
+    "titulo": "La Dama de Negro",
+    "descripcion": "Fantasma de una monja que fue traicionada y asesinada. Se le ha visto vagando por conventos abandonados y cementerios antiguos, especialmente en horas de la madrugada.",
+    "ubicacion": "Los Teques, Estado Miranda",
+    "latitud": 10.25,
+    "longitud": -66.866667,
+    "fechaCreacion": "02/05/2025",
+    "imagen": "https://ik.imagekit.io/sierra/dama_de_negro.jpg?updatedAt=1747693148544",
+    "video": "https://ik.imagekit.io/sierra/dama_de_negro.mp4?updatedAt=1747693196851"
+  }
+]
