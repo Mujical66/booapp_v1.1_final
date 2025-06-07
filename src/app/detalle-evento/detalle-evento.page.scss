@@ -41,3 +41,11 @@ h3 {
   align-items: center;
   padding: 10px;
 }
+
+ion-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  /* para evitar espacios extra debajo de la imagen */
+}

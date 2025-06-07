@@ -27,7 +27,7 @@ export class HomePage implements OnInit {
   }
 
   boton3() {
-    // lógica para botón 3
+    this.navCtrl.navigateForward('/registro');
+    // this.navCtrl.navigateRoot('/registro');
   }
-
 }

@@ -1,80 +1,147 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCard, IonCardHeader, IonCardTitle, IonSearchbar, IonCardSubtitle } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonItem,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonSearchbar,
+  IonCardSubtitle,
+  IonAlert
+} from '@ionic/angular/standalone';
 import { RouterLink, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 
-interface Evento {
-  id: number;
+export interface Evento {
+  _id: string;
   titulo: string;
   descripcion: string;
   ubicacion: string;
   latitud: number;
   longitud: number;
-  fechaCreacion: string;
-  imagen: string;
-  video: string;
+  fechaCreacion: string; // Puedes convertirlo a Date si lo necesitas
+  imagen?: string;
+  video?: string;
+  tipoContenido?: string;
+  comentario?: string;
+  popularidad?: number;
+  estado?: string;
+  fechaVisual?: string;
+  idCodEvento?: string;
+  idUsuario?: string;
 }
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
+  standalone: true,
   imports: [
-    CommonModule, RouterLink, IonHeader, IonToolbar, IonTitle, IonContent,
-    IonList, IonItem, IonCard,
-    IonCardHeader, IonCardTitle, IonSearchbar, IonCardSubtitle
+    CommonModule,
+    RouterLink,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonItem,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonSearchbar,
+    IonCardSubtitle,
+    IonAlert
   ]
 })
 export class Tab1Page implements OnInit {
+  @ViewChild(IonAlert) miAlerta!: IonAlert;
+
   eventos: Evento[] = [];
   eventosFiltrados: Evento[] = [];
   mensajeNoResultados: string = '';
+  eventoMasReciente: Evento | null = null;
+  apiUrl = 'https://booapp-api.onrender.com/v1/backend-api-booapp-aws/colevento';
 
-  constructor(private http: HttpClient, private alertController: AlertController, private router: Router) { }
+  alertButtons = [
+    {
+      text: 'Verlo Ahora',
+      handler: () => {
+        if (this.eventoMasReciente) {
+          this.router.navigate(['/detalle-evento', this.eventoMasReciente._id]);
+        }
+      }
+    },
+    {
+      text: 'Después',
+      role: 'cancel'
+    }
+  ];
+
+  constructor(
+    private platform: Platform,
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.http.get<Evento[]>('./assets/data/eventos.json').subscribe((data) => {
-      this.eventos = data;
-      this.eventosFiltrados = data;
-      this.mostrarEventoMasReciente(); // Llamamos aquí para asegurar que los datos están cargados
+    this.http.get<{ success: boolean; message: string; data: { colEventosleps: Evento[] } }>(this.apiUrl).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.eventos = response.data.colEventosleps;
+          this.eventosFiltrados = [...this.eventos];
+          this.mostrarEventoMasReciente();
+        } else {
+          console.warn('API no devolvió éxito:', response.message);
+          this.mensajeNoResultados = 'No se encontraron eventos.';
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar eventos desde la API:', err);
+        this.mensajeNoResultados = 'No se pudieron cargar los eventos.';
+      }
     });
+  }
+
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/noimagen.png';
   }
 
   // Método para encontrar y mostrar el evento más reciente
   async mostrarEventoMasReciente() {
-    if (this.eventos.length === 0) return; // Si no hay eventos, no hacemos nada
+    if (this.eventos.length === 0) {
+      console.warn('No hay eventos disponibles.');
+      return;
+    }
 
-    // Ordenamos los eventos por fecha (de más reciente a más antigua)
+    const parseFecha = (fechaStr: string): Date => {
+      return new Date(fechaStr); // Ya es compatible con fechas ISO
+    };
+
     const eventosOrdenados = [...this.eventos].sort((a, b) => {
-      const fechaA = new Date(a.fechaCreacion.split('/').reverse().join('/')); // Formato: DD/MM/YYYY -> YYYY/MM/DD
-      const fechaB = new Date(b.fechaCreacion.split('/').reverse().join('/'));
-      return fechaB.getTime() - fechaA.getTime(); // Orden descendente
+      const fechaA = parseFecha(a.fechaCreacion);
+      const fechaB = parseFecha(b.fechaCreacion);
+      return isNaN(fechaA.getTime()) || isNaN(fechaB.getTime())
+        ? 0
+        : fechaB.getTime() - fechaA.getTime();
     });
 
-    const eventoMasReciente = eventosOrdenados[0]; // El primer elemento es el más reciente
+    this.eventoMasReciente = eventosOrdenados[0] || null;
 
-    const alert = await this.alertController.create({
-      header: '⚠️ ¡Nuevo Evento! ⚠️',
-      subHeader: `"${eventoMasReciente.titulo}"`,
-      message: `👻 No pierdas tiempo 👻`,
-      buttons: [
-        {
-          text: 'Verlo Ahora',
-          handler: () => {
-            this.router.navigate(['/detalle-evento', eventoMasReciente.id]);
-          }
-        },
-        {
-          text: 'Después',
-          role: 'cancel'
-        }
-      ],
-      cssClass: 'custom-alert' // (Opcional: Para estilos personalizados)
-    });
-
-    await alert.present();
+    // Mostrar alert automáticamente si estamos en dispositivo móvil
+    if (this.platform.is('capacitor')) {
+      setTimeout(() => {
+        this.miAlerta.present();
+      }, 300);
+    } else {
+      this.miAlerta.present();
+    }
   }
 
   aplicarFiltro(termino: string) {

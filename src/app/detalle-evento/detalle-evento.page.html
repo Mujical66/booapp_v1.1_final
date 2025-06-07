@@ -4,35 +4,72 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="ion-padding">
-  <div *ngIf="evento as Evento; else noData">
+  <div *ngIf="evento; else noData">
     <ion-card>
       <ion-card-header>
         <ion-card-title>{{ evento.titulo }}</ion-card-title>
       </ion-card-header>
-      <img [src]="evento.imagen" [alt]="evento.titulo" />
+
+      <!-- Imagen -->
+      <img
+        [src]="evento.imagen ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.imagen : 'assets/noimagen.png'"
+        [alt]="evento.titulo" (error)="onImageError($event)" />
+
 
       <ion-card-content>
+        <!-- Descripción -->
         <p>{{ evento.descripcion }}</p>
-        <h3>Localidad: {{ evento.ubicacion }}</h3>
-        <h3><strong>Creación:</strong> {{ evento.fechaCreacion }}</h3>
 
-        <div class="video-container">
+        <!-- Ubicación -->
+        <h3><strong>Ubicación:</strong> {{ evento.ubicacion }}</h3>
+
+        <!-- Fecha de creación -->
+        <h3>
+          <strong>Fecha de creación:</strong>
+          {{ evento.fechaCreacion | date:'mediumDate' }}
+        </h3>
+
+        <!-- Video -->
+        <div class="video-container" *ngIf="evento.video">
           <video controls width="100%">
-            <source [src]="evento.video" type="video/mp4">
+            <source [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.video"
+              type="video/mp4">
             Tu navegador no soporta el elemento de video.
           </video>
+        </div>
+
+        <!-- Popularidad -->
+        <div *ngIf="evento.popularidad">
+          <strong>Popularidad:</strong>
+          ⭐ {{ evento.popularidad }}
+        </div>
+
+        <!-- Estado -->
+        <div *ngIf="evento.estado">
+          <strong>Estado:</strong> {{ evento.estado }}
+        </div>
+
+        <!-- Tipo de contenido -->
+        <div *ngIf="evento.tipoContenido">
+          <strong>Tipo de Contenido:</strong> {{ evento.tipoContenido }}
         </div>
       </ion-card-content>
     </ion-card>
   </div>
 
+  <!-- Botón volver -->
   <div class="contenedor-boton">
     <ion-button expand="block" class="boton" [routerLink]="['/tabs']">Volver a Eventos</ion-button>
   </div>
 
+  <!-- Template cuando no hay datos -->
   <ng-template #noData>
     <p>No se encontró el evento.</p>
   </ng-template>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <p>Cargando detalles del evento...</p>
+  </div>
 </ion-content>

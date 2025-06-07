@@ -1,0 +1,16 @@
+URL:
+https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/{nombre_de_imagen} o {nombre_de_video}
+
+Para las imágenes - nombre de variable en BD: imagen
+
+Para los videos - nombre de variable en BD: video 
+
+
+Ejemplo URL con una imagen:
+
+https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/imgEvento_31a6f906df2fd7338e89f79e6cb1161c2820fae71bb32a88fb07ac5755968e7b
+
+
+Ejemplo URL con un video:
+
+https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/vidEvento_a835a41f1a89a9da905e39f5f3747d45bef365bce5164dc35c5a73e338fceeca

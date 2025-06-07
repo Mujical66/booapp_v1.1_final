@@ -53,3 +53,25 @@ ion-searchbar {
   margin-top: 20px;
   font-size: 16px;
 }
+
+.centered-alert {
+  .alert-title {
+    text-align: center;
+  }
+
+  .alert-subtitle {
+    text-align: center;
+  }
+
+  .alert-message {
+    text-align: center;
+  }
+}
+
+ion-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  /* para evitar espacios extra debajo de la imagen */
+}
