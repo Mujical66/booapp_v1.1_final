@@ -1,5 +1,11 @@
-<ion-header class="ion-no-border">
+<ion-header class="ion-no-border"> 
   <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="salir()" fill="clear" class="exit-button">
+        <ion-icon slot="icon-only" name="exit"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
     <ion-title size="large">Bienvenido a Boo</ion-title>
     <ion-title>Mitos y Leyendas</ion-title>
   </ion-toolbar>

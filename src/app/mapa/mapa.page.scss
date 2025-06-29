@@ -1,0 +1,84 @@
+/* 
+NOMBRE: geolocalizacion-ruta.page.scss
+DESCRIPCIÓN: Estilos personalizados para la página de geolocalizacion.
+DESARROLLADOR: Luis Mujica
+FECHA: 2025-06-09
+PROYECTO: BooApp
+VERSION: 1.0.0  
+*/
+
+body {
+  background: #edf2fa !important;
+}
+
+:host {
+  ion-content {
+    --background: #edf2fa; /* Color de fondo del formulario */
+    color: black; /* Color de texto principal */
+    /* Alternativas de tonos azules: 
+             #f0f8ff (AliceBlue)
+             #e6f0ff (azul más claro)
+             #d4e6ff (azul un poco más intenso)
+          */
+  }
+}
+
+.toolbar-azul-oscuro {
+  --background: rgb(7, 26, 76); /* Color azul oscuro especificado */
+  --color: white; /* Texto blanco */
+  padding-left: 16px; /* Alineación izquierda */
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  ion-title {
+    color: #f4f4f7 !important;
+    font-size: 16px;
+  }
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Estilos de transparencia del container card */
+.card-transparente {
+  max-width: 320px;
+  margin: 0 auto 16px auto;
+  background: rgba(255, 255, 255, 0.7); /* Opacidad/transparencia */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+}
+
+.titulo-pequeno {
+  font-size: 1rem !important; /* Más pequeño que el default */
+  color: #0d0da5;
+  font-weight: 600;
+}
+
+.card-transparente ion-card-content p {
+  color: #000 !important;
+}
+
+ion-content {
+  position: relative;
+  --background: transparent;
+  height: 100vh;
+  min-height: 100vh;
+}
+.card-superpuesto {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  max-width: 320px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+}

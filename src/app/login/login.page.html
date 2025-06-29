@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <img src="assets/logoApp.png" alt="Logo App" class="banner-image">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bienvenido</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Email -->
+      <ion-item>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input [(ngModel)]="credenciales.email" type="email" name="email" required
+          #emailInput="ngModel"></ion-input>
+      </ion-item>
+
+      <!-- Mensaje de error para email -->
+      <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="error-message">
+        <ion-text color="danger" *ngIf="emailInput.errors?.['required']">
+          El correo electrónico es requerido
+        </ion-text>
+        <ion-text color="danger" *ngIf="emailInput.errors?.['email']">
+          Ingresa un correo electrónico válido
+        </ion-text>
+      </div>
+
+      <!-- Contraseña -->
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="credenciales.password" type="password" name="password" required minlength="6"
+          #passwordInput="ngModel"></ion-input>
+      </ion-item>
+
+      <!-- Mensaje de error para contraseña -->
+      <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
+        <ion-text color="danger" *ngIf="passwordInput.errors?.['required']">
+          La contraseña es requerida
+        </ion-text>
+        <ion-text color="danger" *ngIf="passwordInput.errors?.['minlength']">
+          La contraseña debe tener al menos 6 caracteres
+        </ion-text>
+      </div>
+
+      <!-- Botón de Login -->
+      <ion-button expand="block" (click)="login()" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Iniciar Sesión' }}
+      </ion-button>
+
+      <!-- Mensaje de registro -->
+      <p class="link-text">
+        ¿No tienes una cuenta?
+        <a [routerLink]="['/registro']" class="link-registro">Regístrate</a>
+      </p>
+
+      <!-- Mensaje de registro -->
+      <p class="link-text">
+        ¿Olvidaste tu Contraseña?
+        <a [routerLink]="['/recuperarclave']" class="link-registro">Recuperar</a>
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <p>Verificando credenciales...</p>
+  </div>
+
+  <!-- Toast -->
+  <ion-toast [isOpen]="showToast" (didDismiss)="showToast = false" [message]="toastMessage" duration="3000"
+    color="danger" position="top"></ion-toast>
+</ion-content>

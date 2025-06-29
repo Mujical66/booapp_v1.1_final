@@ -1,0 +1,208 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Editar Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="cargando" class="spinner-container">
+    <ion-spinner name="bubbles"></ion-spinner>
+    <div class="spinner-title">Actualizando...</div>
+  </div>
+  <form [formGroup]="patchForm" (ngSubmit)="onUpdate()" *ngIf="!cargando">
+    <!-- Texto de identificación de Campos editables -->
+    <div class="etiqueta-campos-editables">(*) Campos editables</div>
+    <div class="titulo-principal-evento">
+      {{ patchForm.get('titulo')?.value }}
+    </div>
+
+    <!-- Campo de Código de Evento -->
+    <ion-item>
+      <ion-label position="floating">Código</ion-label>
+      <ion-input formControlName="idCodEvento" readonly></ion-input>
+    </ion-item>
+
+    <!-- Campo de titulo del Evento -->
+    <ion-item>
+      <ion-label position="floating">Título <span class="asterisco-negrita">*</span></ion-label>
+      <ion-input formControlName="titulo"></ion-input>
+    </ion-item>
+
+    <!-- Campo de Descripción del Evento -->
+    <ion-item>
+      <ion-label position="floating">
+        Descripción <span class="asterisco-negrita">*</span>
+      </ion-label>
+      <ion-textarea formControlName="descripcion" autoGrow="true"></ion-textarea>
+    </ion-item>
+
+    <!-- Campo de Ubicación del Evento -->
+    <ion-item>
+      <ion-label position="floating">Ubicación <span class="asterisco-negrita">*</span>
+      </ion-label>
+      <ion-textarea formControlName="ubicacion" autoGrow="true"></ion-textarea>
+      <!--  <ion-input formControlName="ubicacion"></ion-input> -->
+    </ion-item>
+
+    <!-- Campo de latitud de Evento -->
+    <ion-item>
+      <ion-label position="floating">Latitud <span class="asterisco-negrita">*</span></ion-label>
+      <ion-input formControlName="latitud"></ion-input>
+    </ion-item>
+
+    <!-- Campo de longitud de Evento -->
+    <ion-item>
+      <ion-label position="floating">Longitud <span class="asterisco-negrita">*</span></ion-label>
+      <ion-input formControlName="longitud"></ion-input>
+    </ion-item>
+
+    <!-- Campo Fecha de Creación del Evento -->
+    <ion-item>
+      <ion-label display="block" style="font-size: 13px">Fecha de Creación</ion-label>
+      <div style="margin-top: 4px">{{ fechaCreacionFormateada }}</div>
+    </ion-item>
+
+    <!-- ########################################################-->
+    <!-- #############  SECCIÓN DE IMAGEN Y VIDEO ###############-->
+    <!-- ########################################################-->
+
+    <!-- Seleccionar la Imagen -->
+    <ion-item>
+      <ion-label style="font-size: 13px">Imagen <span class="asterisco-negrita">*</span></ion-label>
+      <ion-button (click)="tomarFoto()">
+        <ion-icon slot="start" name="camera"></ion-icon>
+        Seleccionar
+      </ion-button>
+      <ion-button *ngIf="imagenPrevia" fill="clear" color="danger" (click)="eliminarImagen()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Eliminar
+      </ion-button>
+    </ion-item>
+
+    <!-- Vista previa de la imagen (almacenada o nueva) -->
+    <div *ngIf="imagenPrevia || imagenAlmacenada" class="image-container">
+      <ion-img [src]="imagenPrevia ? imagenPrevia : imagenAlmacenada" style="max-height: 200px"></ion-img>
+    </div>
+
+    <!-- Sección para video -->
+    <ion-item>
+      <ion-label style="font-size: 13px">Video <span class="asterisco-negrita">*</span></ion-label>
+      <ion-button (click)="seleccionarVideo()">
+        <ion-icon name="videocam" slot="start"></ion-icon>
+        Seleccionar
+      </ion-button>
+      <ion-button *ngIf="videoPrevia" fill="clear" color="danger" (click)="eliminarVideo()">
+        <ion-icon name="trash" slot="start"></ion-icon>
+        Eliminar
+      </ion-button>
+    </ion-item>
+
+    <!-- Vista previa del video (almacenado o nuevo) -->
+    <div class="video-container" *ngIf="(videoPrevia && esVideo) || videoAlmacenado">
+      <video controls class="video-preview" [attr.key]="videoKey">
+        <source [src]="videoPrevia ? videoPrevia : videoAlmacenado"
+          [type]="patchForm.get('video')?.value?.mimeType || 'video/mp4'" />
+        Tu navegador no soporta la reproducción de video.
+      </video>
+    </div>
+
+    <!-- Nombre del video seleccionado y botón para actualizar vista previa -->
+    <div *ngIf="nombreArchivo && esVideo" class="video-nombre" style="
+        text-align: center;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+      <ion-icon name="film" style="vertical-align: middle"></ion-icon>
+      <span style="margin: 0 8px">{{ nombreArchivo }}</span>
+      <ion-button fill="clear" size="small" (click)="actualizarVistaPreviaVideo()" style="margin-left: 8px">
+        Actualizar Vista Previa
+      </ion-button>
+    </div>
+
+    <!-- Información del archivo cuando no es video -->
+    <div *ngIf="!esVideo && nombreArchivo" class="file-info">
+      <ion-icon name="document" slot="start"></ion-icon>
+      Archivo seleccionado: {{ nombreArchivo }} (no es un video compatible)
+    </div>
+
+    <!-- ############################################################-->
+    <!-- #############  FIN SECCIÓN DE IMAGEN Y VIDEO ###############-->
+    <!-- ############################################################-->
+
+    <!-- Campo del comentario del Evento -->
+    <ion-item>
+      <ion-label position="floating">Comentario <span class="asterisco-negrita">*</span>
+      </ion-label>
+      <ion-textarea formControlName="comentario" autoGrow="true"></ion-textarea>
+      <!-- <ion-input formControlName="comentario"></ion-input> -->
+    </ion-item>
+
+    <!-- Campo de Popularidad del Evento -->
+    <ion-item>
+      <ion-label position="floating">Popularidad</ion-label>
+      <ion-input formControlName="popularidad" readonly></ion-input>
+    </ion-item>
+
+    <!-- Campo de Estado del Evento -->
+    <ion-item>
+      <ion-label position="floating">Estado</ion-label>
+      <ion-input formControlName="estado"></ion-input>
+    </ion-item>
+
+    <!-- Campo de Fecha de Visualización del Evento -->
+    <ion-item>
+      <ion-label position="floating">Fecha de Visualización</ion-label>
+      <ion-input formControlName="fechaVisual"></ion-input>
+    </ion-item>
+
+    <!-- Campo de Revision del Comentario del Evento -->
+    <ion-item>
+      <ion-label position="floating">Comentario de Revisión *</ion-label>
+      <ion-textarea formControlName="comentarioRev" autoGrow="true"></ion-textarea>
+      <!-- <ion-input formControlName="comentarioRev"></ion-input> -->
+    </ion-item>
+
+    <!-- Campo del Tipo de Contenido del Evento -->
+    <ion-item>
+      <ion-label position="floating">
+        Tipo de Contenido <span class="asterisco-negrita">*</span>
+      </ion-label>
+      <ion-select formControlName="tipoContenido" interface="popover" required>
+        <ion-select-option value="Mito">Mito</ion-select-option>
+        <ion-select-option value="Leyenda">Leyenda</ion-select-option>
+        <ion-select-option value="Otro">Otro</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-note color="danger" *ngIf="patchForm.get('tipoContenido')?.invalid && patchForm.get('tipoContenido')?.touched">
+      Este campo es requerido
+    </ion-note>
+
+    <!-- Campo de latitud de Evento -->
+    <ion-item>
+      <ion-label position="floating">id Usuario</ion-label>
+      <ion-input formControlName="idUsuario" readonly></ion-input>
+    </ion-item>
+    <!-- Puedes agregar más campos aquí, por ejemplo: -->
+    <!--
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input formControlName="descripcion"></ion-input>
+    </ion-item>
+    -->
+    <ion-grid class="botones-acciones">
+      <div class="contenedor-boton">
+        <ion-button type="submit" [disabled]="patchForm.invalid || cargando" expand="block" class="boton">
+          Guardar
+        </ion-button>
+        <ion-button expand="block" class="boton" (click)="cancelar()">Regresar</ion-button>
+      </div>
+    </ion-grid>
+  </form>
+
+
+  <!-- <div class="contenedor-boton">
+    <ion-button expand="block" class="boton" [routerLink]="['/tabs-user/tab4']">Volver a CRUD</ion-button>
+  </div> -->
+</ion-content>

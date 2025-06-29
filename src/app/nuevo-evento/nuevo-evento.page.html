@@ -1,0 +1,216 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Cargar Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+    <!-- Sección 1: Información básica -->
+    <ion-list>
+      <ion-item>
+        <!-- Campo Titulo del Evento -->
+        <ion-input label="Título" placeholder="Ingrese el título" formControlName="titulo" required>
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="registroForm.get('titulo')?.invalid && registroForm.get('titulo')?.touched">
+        Este campo es requerido
+      </ion-note>
+
+      <ion-item>
+        <!-- Campo Código del Evento -->
+        <ion-input label="Código" formControlName="idCodEvento" readonly="">
+        </ion-input>
+      </ion-item>
+
+      <!-- Campo Descripción del Evento -->
+      <ion-item>
+        <ion-textarea label="Descripción" placeholder="Ingrese la descripción" formControlName="descripcion" required>
+        </ion-textarea>
+      </ion-item>
+      <ion-note color="danger"
+        *ngIf="registroForm.get('descripcion')?.invalid && registroForm.get('descripcion')?.touched">
+        Este campo es requerido
+      </ion-note>
+    </ion-list>
+
+    <!-- Sección 2: Ubicación -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Ubicación</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <!-- Campo Dirección del Evento -->
+        <ion-input label="Dirección" placeholder="Ingrese la dirección" formControlName="ubicacion" required>
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="registroForm.get('ubicacion')?.invalid && registroForm.get('ubicacion')?.touched">
+        Este campo es requerido
+      </ion-note>
+
+      <ion-item>
+        <!-- Campo Latitud del Evento -->
+        <ion-input label="Latitud" placeholder="Ingrese la latitud" formControlName="latitud">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <!-- Campo Longitud del Evento -->
+        <ion-input label="Longitud" placeholder="Ingrese la longitud" formControlName="longitud">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <!-- Sección 3: Multimedia -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Multimedia</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <!-- Campo Fecha de Creación del Evento -->
+        <ion-label>Fecha de creación</ion-label>
+        <ion-datetime-button datetime="fechaCreacion"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="fechaCreacion" formControlName="fechaCreacion" presentation="date">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <!-- Seleccionar la Imagen -->
+      <ion-item>
+        <!-- Campo Imagen del Evento -->
+        <ion-label>Imagen</ion-label>
+        <ion-button fill="clear" (click)="tomarFoto()">
+          <ion-icon slot="start" name="camera"></ion-icon>
+          Seleccionar
+        </ion-button>
+
+        <!-- Botón para eliminar (solo visible cuando hay imagen) -->
+        <ion-button *ngIf="imagenPrevia" fill="clear" color="danger" (click)="eliminarImagen()">
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Eliminar
+        </ion-button>
+      </ion-item>
+
+      <!-- Vista previa de la imagen con opción de eliminación -->
+      <div *ngIf="imagenPrevia" class="image-container">
+        <ion-img [src]="imagenPrevia" style="max-height: 200px"></ion-img>
+      </div>
+
+      <!-- Sección para video -->
+      <ion-item>
+        <!-- Campo Video del Evento -->
+        <ion-label>Video</ion-label>
+        <ion-button fill="clear" (click)="seleccionarVideo()">
+          <ion-icon name="videocam" slot="start"></ion-icon>
+          Seleccionar
+        </ion-button>
+
+        <ion-button *ngIf="videoPrevia || nombreArchivo" fill="clear" color="danger" (click)="eliminarVideo()">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Eliminar
+        </ion-button>
+      </ion-item>
+
+      <!-- Vista previa del video -->
+      <div class="video-container" *ngIf="videoPrevia && esVideo">
+        <video controls class="video-preview">
+          <source [src]="videoPrevia" [type]="registroForm.get('video')?.value?.mimeType" />
+          Tu navegador no soporta la reproducción de video.
+        </video>
+      </div>
+
+      <!-- Información del archivo cuando no es video -->
+      <div *ngIf="!esVideo && nombreArchivo" class="file-info">
+        <ion-icon name="document" slot="start"></ion-icon>
+        Archivo seleccionado: {{ nombreArchivo }} (no es un video compatible)
+      </div>
+
+      <ion-item>
+        <ion-textarea label="Comentario" placeholder="Ingrese un comentario" formControlName="comentario">
+        </ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <!-- Sección 4: Detalles adicionales -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Detalles adicionales</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <!-- Campo Popularidad del Evento (0-5) -->
+        <ion-input label="Popularidad" type="number" placeholder="Ingrese la popularidad" formControlName="popularidad"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger"
+        *ngIf="registroForm.get('popularidad')?.invalid && registroForm.get('popularidad')?.touched">
+        Debe ser un número
+      </ion-note>
+
+      <ion-item>
+        <!-- Campo Estado del Evento "Activo / Inactivo" -->
+        <ion-select label="Estado" formControlName="estado" interface="popover" required>
+          <ion-select-option value="Activo">Activo</ion-select-option>
+          <ion-select-option value="Inactivo">Inactivo</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <!-- Campo Tipo de Contenido del Evento (Mito / Leyenda / Otro) -->
+        <ion-select label="Tipo de Contenido" formControlName="tipoContenido" interface="popover" required>
+          <ion-select-option value="Mito">Mito</ion-select-option>
+          <ion-select-option value="Leyenda">Leyenda</ion-select-option>
+          <ion-select-option value="Otro">Otro</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-note color="danger"
+        *ngIf="registroForm.get('tipoContenido')?.invalid && registroForm.get('tipoContenido')?.touched">
+        Este campo es requerido
+      </ion-note>
+
+      <ion-item>
+        <!-- Campo ID del Usuario que REgistra el Evento -->
+        <ion-input label="ID Usuario" formControlName="idUsuario" required readonly="">
+        </ion-input>
+      </ion-item>
+      <!-- <ion-note color="danger" *ngIf="registroForm.get('idUsuario')?.invalid && registroForm.get('idUsuario')?.touched">
+        Este campo es requerido
+      </ion-note> --> 
+    </ion-list>
+
+    <!-- Botones de acción -->
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="contenedor-boton">
+            <ion-button type="submit" expand="block" class="boton">
+              <ion-icon slot="start" name="save"></ion-icon>
+              <!-- Icono de diskette -->
+              <span style="color: black">Guardar</span>
+              <!-- Texto blanco -->
+            </ion-button> 
+
+            <ion-button expand="block" class="boton" (click)="volver()">Volver</ion-button>
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <!-- Loader para operaciones en progreso -->
+  <ion-loading [isOpen]="cargando" message="Procesando, estableciendo comunicación con la API, por favor espere..."
+    spinner="circles" duration="0">
+    <!-- duration=0 para que no se cierre automáticamente -->
+  </ion-loading>
+
+  <!-- <div class="contenedor-boton">
+    
+  </div> -->
+</ion-content>

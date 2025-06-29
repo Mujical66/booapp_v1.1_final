@@ -1,17 +1,59 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border"> 
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title>Rutas Paranormales</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="fondo-azul-claro texto-gris-oscuro">
+  <ion-list *ngIf="!cargandor">
+    <ng-container *ngFor="let item of data; let index = index">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img
+            *ngIf="item.imagen"
+            [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
+            alt="Imagen de la ruta"
+          />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ item.titulo }}</h2>
+          <p>
+            <strong>Longitud:</strong> {{ item.longitud }}<br />
+            <strong>Latitud:</strong> {{ item.latitud }} <br>
+            <strong>Ubicación:</strong> {{ item.ubicacion }}
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+          </p>
+          <ion-button
+            size="small"
+            fill="solid"
+            (click)="verMapa(item)"
+            style="
+              margin-top: 8px;
+              float: right;
+              min-width: unset;
+              --background: #7b5af1;
+              --color: #fff;
+              font-weight: bold;
+            "
+          >
+            <img
+              src="../../assets/geolocalizacion.png"
+              alt="icono"
+              style="width: 24px; height: 24px; margin-right: 6px"
+            />
+            Visualizar Ruta
+          </ion-button>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+  <div *ngIf="!cargandor && data && data.length === 0">
+    No hay datos para mostrar.
+  </div>
+  <!-- <div *ngIf="cargandor" class="spinner-container">
+    <ion-spinner name="bubbles"></ion-spinner>
+    <div class="spinner-title">Cargando...</div>
+  </div> -->
 </ion-content>
+

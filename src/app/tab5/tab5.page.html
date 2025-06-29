@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title>Perfil del Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card *ngIf="usuarioActual">
+    <ion-card-header>
+      <ion-avatar class="avatar">
+        <!-- <img [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil" alt="Foto de perfil" /> -->
+
+        <img
+          [src]="usuarioActual.fotoPerfil ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil : 'assets/logoFantasma.png'"
+          [alt]="usuarioActual.fotoPerfil" />
+      </ion-avatar>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Modo Lectura -->
+      <ion-list *ngIf="!editando">
+        <ion-item>
+          <ion-label position="stacked">DNI</ion-label>
+          <ion-input [value]="usuarioActual.IdDni" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">NOMBRE</ion-label>
+          <ion-input [value]="usuarioActual.nombre" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">EMAIL</ion-label>
+          <ion-input [value]="usuarioActual.email" readonly></ion-input>
+        </ion-item>
+
+        <div class="ion-margin-top">
+          <ion-button expand="block" (click)="iniciarEdicion()">Editar</ion-button>
+          <ion-button expand="block" color="danger" (click)="confirmarEliminar()">Eliminar Cuenta</ion-button>
+        </div>
+      </ion-list>
+
+      <!-- Modo Edición -->
+      <form *ngIf="editando" [formGroup]="formPerfil" (ngSubmit)="guardarCambios()">
+        <ion-item>
+          <ion-label position="stacked">DNI</ion-label>
+          <ion-input formControlName="IdDni" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">NOMBRE</ion-label>
+          <ion-input formControlName="nombre" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">NUEVA CONTRASEÑA</ion-label>
+          <ion-input type="password" formControlName="password" placeholder="Dejar vacío para no cambiar"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">EMAIL</ion-label>
+          <ion-input [value]="usuarioActual.email" readonly></ion-input>
+        </ion-item>
+
+        <div class="ion-margin-top">
+          <ion-button type="submit" expand="block" [disabled]="formPerfil.invalid">Guardar</ion-button>
+          <ion-button expand="block" color="medium" (click)="cancelarEdicion()">Cancelar</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    [duration]="3000"
+    (didDismiss)="showToast = false"
+    [color]="toastColor"
+  ></ion-toast>
+</ion-content>

@@ -1,4 +1,8 @@
 ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   .notificacion-banner {
     background-color: #f0f0f0;
     margin: 15px;
@@ -17,8 +21,8 @@ ion-toolbar {
 ion-title.title-large {
   margin-top: 30px;
   margin-bottom: 10px;
-  color: #fff;
-  font-size: 32px;
+  color: "#ffffff";
+  font-size: 26px;
   font-weight: bold;
   text-align: center;
 }
@@ -26,14 +30,14 @@ ion-title.title-large {
 ion-title {
   margin-bottom: 10px;
   color: #fff;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
 }
 
 ion-card-title {
   text-align: center;
-  font-size: 24px;
+  font-size: 19px;
   font-weight: bold;
 }
 
@@ -74,4 +78,22 @@ ion-card img {
   object-fit: cover;
   display: block;
   /* para evitar espacios extra debajo de la imagen */
+}
+
+.regresa {
+  background-color: red;
+}
+
+.exit-button {
+  --color: var(--color-background);
+  /* Color blanco para el icono */
+  --padding-end: 16px;
+  /* Espaciado derecho */
+  --padding-start: 16px;
+  /* Espaciado izquierdo */
+
+  ion-icon {
+    font-size: 24px;
+    /* Tamaño del icono */
+  }
 }

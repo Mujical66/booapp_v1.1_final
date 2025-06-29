@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title>Administrar Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-list *ngIf="usuarios.length > 0">
+    <ion-grid>
+      <ion-row class="header-row">
+        <ion-col size="4"><strong>Nombre</strong></ion-col>
+        <ion-col size="4"><strong>Email</strong></ion-col>
+        <ion-col size="2"><strong>Rol</strong></ion-col>
+        <ion-col size="2"><strong>Acción</strong></ion-col>
+      </ion-row>
+
+      <ion-item *ngFor="let usuario of usuarios">
+        <ion-grid class="centered-grid">
+          <ion-row class="user-row">
+            <ion-col size="3">{{ usuario.nombre }}</ion-col>
+            <ion-col size="4">{{ usuario.email }}</ion-col>
+            <ion-col size="3">{{ usuario.rol }}</ion-col>
+            <ion-col size="2">
+              <ion-button *ngIf="usuario._id !== usuarioActual?._id" size="small" (click)="cambiarRol(usuario)"
+                [color]="usuario.rol === 'admin' ? 'warning' : 'primary'">
+                {{ usuario.rol === 'admin' ? 'Hacer Turista' : 'Hacer Admin' }}
+              </ion-button>
+              <ion-button *ngIf="usuario._id === usuarioActual?._id" size="small" color="danger" 
+                (click)="confirmarEliminarCuenta()">
+                Borrar Cuenta
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-grid>
+  </ion-list>
+
+  <div *ngIf="usuarios.length === 0" class="ion-text-center ion-padding">
+    <p>No se encontraron usuarios</p>
+    <ion-button (click)="cargarUsuarios()">Reintentar</ion-button>
+  </div>
+</ion-content>

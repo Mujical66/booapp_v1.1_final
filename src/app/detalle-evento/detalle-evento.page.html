@@ -16,13 +16,19 @@
         [src]="evento.imagen ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.imagen : 'assets/noimagen.png'"
         [alt]="evento.titulo" (error)="onImageError($event)" />
 
-
       <ion-card-content>
         <!-- Descripción -->
         <p>{{ evento.descripcion }}</p>
 
+        <!-- Id -->
+        <h3><strong>Id:</strong> {{ evento.idCodEvento }}</h3>
+
         <!-- Ubicación -->
         <h3><strong>Ubicación:</strong> {{ evento.ubicacion }}</h3>
+
+        <!-- Coordenadas -->
+        <h3><strong>Latitud:</strong> {{ evento.latitud }}</h3>
+        <h3><strong>Longitud:</strong> {{ evento.longitud }}</h3>
 
         <!-- Fecha de creación -->
         <h3>
@@ -35,41 +41,33 @@
           <video controls width="100%">
             <source [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.video"
               type="video/mp4">
-            Tu navegador no soporta el elemento de video.
           </video>
         </div>
 
         <!-- Popularidad -->
         <div *ngIf="evento.popularidad">
-          <strong>Popularidad:</strong>
-          ⭐ {{ evento.popularidad }}
+          <strong>Popularidad:</strong> ⭐ {{ evento.popularidad }}
         </div>
 
         <!-- Estado -->
         <div *ngIf="evento.estado">
           <strong>Estado:</strong> {{ evento.estado }}
         </div>
-
-        <!-- Tipo de contenido -->
-        <div *ngIf="evento.tipoContenido">
-          <strong>Tipo de Contenido:</strong> {{ evento.tipoContenido }}
-        </div>
       </ion-card-content>
     </ion-card>
   </div>
 
-  <!-- Botón volver -->
-  <div class="contenedor-boton">
-    <ion-button expand="block" class="boton" [routerLink]="['/tabs']">Volver a Eventos</ion-button>
-  </div>
-
-  <!-- Template cuando no hay datos -->
   <ng-template #noData>
-    <p>No se encontró el evento.</p>
+    <p *ngIf="!loading">No se encontró el evento.</p>
   </ng-template>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="loading">
+  <div *ngIf="loading">
     <p>Cargando detalles del evento...</p>
+  </div>
+
+  <div class="contenedor-boton">
+    <ion-button expand="block" class="boton" (click)="volverAEventos()">
+      Volver a Eventos
+    </ion-button>
   </div>
 </ion-content>

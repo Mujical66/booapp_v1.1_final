@@ -1,0 +1,211 @@
+ion-toolbar {
+  --background: var(--color-menu);
+  --color: #ffffff;
+  margin-top: 20px;
+}
+
+ion-title {
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.boton {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  width: 190px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+ion-button {
+  --background: var(--color-buttons);
+  --border-radius: 10px;
+}
+
+.contenedor-boton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+
+
+body {
+  background: #edf2fa !important;
+}
+
+:host {
+  ion-content {
+    --background: #edf2fa; /* Color de fondo del formulario */
+    color: black; /* Color de texto principal */
+    /* Alternativas de tonos azules: 
+         #f0f8ff (AliceBlue)
+         #e6f0ff (azul más claro)
+         #d4e6ff (azul un poco más intenso)
+      */
+  }
+}
+
+ion-content {
+  --background: #edf2fa !important;
+  background: #edf2fa !important;
+}
+
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+.campo-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  background: transparent; // Asegura que no tape el fondo
+  z-index: 10;
+}
+
+.spinner-title {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #5e5d5d;
+}
+
+ion-spinner {
+  color: #5e5d5d !important; /* Negro */
+}
+
+.small-subtitle {
+  font-size: 0.7rem; /* Puedes ajustar este valor según lo necesites */
+  color: #050230;
+}
+
+.small-title {
+  font-size: 0.75rem; /* Puedes ajustar este valor según lo necesites */
+  color: rgb(7, 26, 76);
+}
+
+.card-img {
+  display: block;
+  margin: 16px auto 20px auto; /* 16px arriba, 20px abajo, centrado */
+  width: 300px; /* Ajusta el ancho deseado */
+  height: 300px; /* Ajusta el alto deseado */
+  object-fit: cover; /* O usa 'contain' si prefieres ver la imagen completa */
+  border-radius: 12px; /* Opcional: bordes redondeados */
+  background: #f4f4f4; /* Opcional: fondo gris si la imagen no llena el espacio */
+}
+
+ion-content {
+  --background: #edf2fa;
+  background: #edf2fa !important;
+}
+
+.toolbar-azul-oscuro {
+  --background: rgb(7, 26, 76); /* Color azul oscuro especificado */
+  --color: white; /* Texto blanco */
+  padding-left: 16px; /* Alineación izquierda */
+
+  // ion-title {
+  //   color: #f0eff5 !important;
+  //   font-size: 16px;
+  //   padding-top: 10px; /* Espacio superior */
+  // }
+}
+
+.toolbar-azul-oscuro {
+  --background: #003366; /* azul oscuro */
+  --color: #fff !important; /* texto blanco */
+}
+
+.toolbar-azul-oscuro ion-title,
+.toolbar-azul-oscuro ion-toolbar,
+.toolbar-azul-oscuro {
+  color: #fff !important;
+}
+
+.descripcion-card {
+  font-size: 12px; /* Ajusta el tamaño según lo necesites */
+}
+
+.descripcion-card strong {
+  font-size: 12px; /* Tamaño para el texto "Descripción:" */
+  color: #050230;
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px; /* Separación entre iconos */
+  margin-top: 18px; /* Separación arriba de los iconos */
+  margin-bottom: 10px; /* Separación abajo del card */
+}
+
+.edit-icon,
+.delete-icon {
+  font-size: 1.7em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.edit-icon {
+  color: #1976d2; /* Azul para editar */
+}
+
+.delete-icon {
+  color: #d32f2f; /* Rojo para borrar */
+}
+
+ion-card {
+  margin-bottom: 24px; /* Espacio entre cards */
+}
+
+.fondo-azul-claro {
+  --background: #e3f0ff !important; /* azul claro */
+}
+
+ion-card {
+  --background: #e3f0ff !important; /* azul claro */
+  background: #e3f0ff !important; /* fallback para navegadores */
+  color: #111 !important; /* letras en negro */
+}
+
+

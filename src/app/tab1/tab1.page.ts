@@ -1,5 +1,5 @@
+// tab1.page.ts 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import {
   IonHeader,
@@ -13,29 +13,17 @@ import {
   IonCardTitle,
   IonSearchbar,
   IonCardSubtitle,
-  IonAlert
+  IonAlert,
+  IonButton,
+  IonButtons,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { RouterLink, Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { EventosService, Evento } from '../services/eventos.service';
+import { AuthService } from '../services/auth.service'; // Asegúrate de que la ruta sea correcta
+import { addIcons } from 'ionicons';
+import { exit } from 'ionicons/icons';
 
-export interface Evento {
-  _id: string;
-  titulo: string;
-  descripcion: string;
-  ubicacion: string;
-  latitud: number;
-  longitud: number;
-  fechaCreacion: string; // Puedes convertirlo a Date si lo necesitas
-  imagen?: string;
-  video?: string;
-  tipoContenido?: string;
-  comentario?: string;
-  popularidad?: number;
-  estado?: string;
-  fechaVisual?: string;
-  idCodEvento?: string;
-  idUsuario?: string;
-}
 
 @Component({
   selector: 'app-tab1',
@@ -56,7 +44,10 @@ export interface Evento {
     IonCardTitle,
     IonSearchbar,
     IonCardSubtitle,
-    IonAlert
+    IonAlert,
+    IonButton,
+    IonIcon,
+    IonButtons
   ]
 })
 export class Tab1Page implements OnInit {
@@ -66,7 +57,6 @@ export class Tab1Page implements OnInit {
   eventosFiltrados: Evento[] = [];
   mensajeNoResultados: string = '';
   eventoMasReciente: Evento | null = null;
-  apiUrl = 'https://booapp-api.onrender.com/v1/backend-api-booapp-aws/colevento';
 
   alertButtons = [
     {
@@ -84,13 +74,24 @@ export class Tab1Page implements OnInit {
   ];
 
   constructor(
-    private platform: Platform,
-    private http: HttpClient,
-    private router: Router
-  ) { }
+    private eventosService: EventosService,
+    private router: Router,
+    private authService: AuthService,
+  ) {
+    addIcons({ exit });
+  }
 
   ngOnInit(): void {
-    this.http.get<{ success: boolean; message: string; data: { colEventosleps: Evento[] } }>(this.apiUrl).subscribe({
+    this.cargarEventos();
+  }
+
+  salir() {
+    this.authService.cerrarSesion();
+    this.router.navigate(['/home']);
+  }
+
+  cargarEventos(): void {
+    this.eventosService.obtenerEventos().subscribe({
       next: (response) => {
         if (response.success) {
           this.eventos = response.data.colEventosleps;
@@ -102,7 +103,7 @@ export class Tab1Page implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error al cargar eventos desde la API:', err);
+        console.error('Error al cargar eventos:', err);
         this.mensajeNoResultados = 'No se pudieron cargar los eventos.';
       }
     });
@@ -113,35 +114,18 @@ export class Tab1Page implements OnInit {
     imgElement.src = 'assets/noimagen.png';
   }
 
-  // Método para encontrar y mostrar el evento más reciente
   async mostrarEventoMasReciente() {
-    if (this.eventos.length === 0) {
+    this.eventoMasReciente = this.eventosService.obtenerEventoMasReciente(this.eventos);
+
+    if (!this.eventoMasReciente) {
       console.warn('No hay eventos disponibles.');
       return;
     }
 
-    const parseFecha = (fechaStr: string): Date => {
-      return new Date(fechaStr); // Ya es compatible con fechas ISO
-    };
-
-    const eventosOrdenados = [...this.eventos].sort((a, b) => {
-      const fechaA = parseFecha(a.fechaCreacion);
-      const fechaB = parseFecha(b.fechaCreacion);
-      return isNaN(fechaA.getTime()) || isNaN(fechaB.getTime())
-        ? 0
-        : fechaB.getTime() - fechaA.getTime();
-    });
-
-    this.eventoMasReciente = eventosOrdenados[0] || null;
-
-    // Mostrar alert automáticamente si estamos en dispositivo móvil
-    if (this.platform.is('capacitor')) {
-      setTimeout(() => {
-        this.miAlerta.present();
-      }, 300);
-    } else {
+    // Mostrar alert automáticamente
+    setTimeout(() => {
       this.miAlerta.present();
-    }
+    }, this.eventosService.esDispositivoMovil() ? 300 : 0);
   }
 
   aplicarFiltro(termino: string) {
@@ -155,10 +139,8 @@ export class Tab1Page implements OnInit {
       evento.ubicacion.toLowerCase().includes(termino)
     );
 
-    if (this.eventosFiltrados.length === 0) {
-      this.mensajeNoResultados = 'No se encontraron eventos.';
-    } else {
-      this.mensajeNoResultados = '';
-    }
+    this.mensajeNoResultados = this.eventosFiltrados.length === 0
+      ? 'No se encontraron eventos.'
+      : '';
   }
 }
