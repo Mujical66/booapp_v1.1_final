@@ -115,33 +115,21 @@
 
       <!-- Campo Fecha de Creación del Evento -->
       <ion-item class="fecha-item">
-        <ion-label class="date-label" >Fecha </ion-label>
-
+        <ion-label class="date-label">Fecha</ion-label>
         <ion-input
-          [value]="registroForm.get('fechaCreacion')?.value | date: 'mediumDate'"
-          readonly
-          (click)="abrirSelectorFecha()"
+          type="date"
+          [value]="registroForm.get('fechaCreacion')?.value | date: 'yyyy-MM-dd'"
+          (ionChange)="fechaCambiada($event)"
           class="inputFecha"
+          required
         ></ion-input>
       </ion-item>
-
-      <ion-modal
-        [isOpen]="mostrarSelectorFecha"
-        (didDismiss)="mostrarSelectorFecha = false"
+      <ion-note
+        color="danger"
+        *ngIf="registroForm.get('fechaCreacion')?.invalid && registroForm.get('fechaCreacion')?.touched"
       >
-        <ng-template>
-          <ion-content>
-            <ion-datetime
-              presentation="date"
-              [(ngModel)]="fechaSeleccionada"
-              (ionChange)="fechaCambiada($event)"
-              [showDefaultButtons]="true"
-              [doneText]="'Seleccionar'"
-              [cancelText]="'Cancelar'"
-            ></ion-datetime>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
+        Este campo es requerido
+      </ion-note>
 
       <!-- Seleccionar la Imagen -->
       <ion-item>

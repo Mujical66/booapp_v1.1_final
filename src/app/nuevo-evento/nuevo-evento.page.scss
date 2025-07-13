@@ -117,13 +117,13 @@ ion-item.fecha-item {
   --background: transparent; /* Evitar fondos que afecten el tamaño */
   align-items: center; /* Centrar verticalmente los elementos */
   margin: 0; /* Eliminar márgenes */
-  height: 36px; /* Forzar altura fija para el ion-item */
+  height: 34px; /* Forzar altura fija para el ion-item */
 }
 
 /* Ajustar el ion-input con la clase inputFecha */
 ion-item.fecha-item ion-input.inputFecha {
   --background: var(--color-buttons); /* Mantener fondo personalizado */
-  --border-radius: 0px; /* Mantener borde redondeado */
+  --border-radius: 10px; /* Mantener borde redondeado */
   --padding-top: 0px; /* Minimizar padding superior */
   --padding-bottom: 0px; /* Minimizar padding inferior */
   --padding-start: 8px; /* Padding lateral */
@@ -132,12 +132,12 @@ ion-item.fecha-item ion-input.inputFecha {
   line-height: 26px; /* Alinear texto verticalmente */
   font-size: 14px; /* Tamaño de fuente reducido */
   width: 100%;
-  max-width: 110px; /* Mantener el ancho máximo */
+  max-width: 130px; /* Mantener el ancho máximo */
   margin-left: auto;
-  margin-right: 10px;
+  margin-right: 28px;
   margin-top: 5px;
   text-align: center;
-  pointer-events: none; /* Mantener el click pasando al ion-item */
+  pointer-events: auto; /* Asegurar que el input sea interactivo */
 }
 
 /* Ajustar el label para alinear con el input */
@@ -145,7 +145,6 @@ ion-item.fecha-item ion-label.date-label {
   margin: 0 16px;
   white-space: nowrap;
   font-size: 16px; /* Reducir tamaño de fuente */
-  color: #ffffff;
   min-width: 125px;
   line-height: 28px; /* Alinear con la altura del input */
 }
@@ -157,4 +156,6 @@ ion-item.fecha-item ion-input.inputFecha::part(native) {
   padding-bottom: 2px; /* Minimizar padding */
   line-height: 28px; /* Alinear texto */
   font-size: 14px; /* Tamaño de fuente consistente */
+  pointer-events: auto; /* Asegurar interactividad en el Shadow DOM */
 }
+

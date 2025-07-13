@@ -8,28 +8,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { 
-  IonModal, 
-  IonDatetime, 
-  IonDatetimeButton,
-  IonInput
-} from '@ionic/angular/standalone';
-// import { IonIcon } from '@ionic/angular/standalone';
-import {
+  IonInput,
   IonicModule,
   AlertController,
   LoadingController,
+  Platform,
 } from '@ionic/angular';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem } from '@capacitor/filesystem';
 import { AuthService } from '../services/auth.service';
-
 import { EventosService } from '../services/eventos.service';
 import { NavController } from '@ionic/angular';
-
 import { addIcons } from 'ionicons';
-import { help, camera, trash, videocam } from 'ionicons/icons';
+import { help, camera, trash, videocam, save } from 'ionicons/icons';
 
 type CamposAyuda =
   | 'titulo'
@@ -53,17 +46,15 @@ type CamposAyuda =
 })
 export class NuevoEventoPage implements OnDestroy {
   usuarioActual: any;
-  cargando = false; // Variable para controlar el estado del loader
+  cargando = false;
   registroForm: FormGroup;
   fechaActual: string = new Date().toISOString();
   imagenPrevia: string | undefined;
   videoPrevia: SafeUrl | undefined;
   esVideo: boolean = false;
   nombreArchivo: string = '';
-  isAdmin: boolean = false; // Añade esta propiedad
-
-  mostrarSelectorFecha = false;
-  fechaSeleccionada = new Date().toISOString();
+  isAdmin: boolean = false;
+  private backbuttonSubscription: any;
 
   private generarCodigoEvento(): string {
     const caracteres =
@@ -76,7 +67,6 @@ export class NuevoEventoPage implements OnDestroy {
         Math.floor(Math.random() * caracteres.length)
       );
     }
-
     return resultado;
   }
 
@@ -85,11 +75,12 @@ export class NuevoEventoPage implements OnDestroy {
     private fb: FormBuilder,
     private alertController: AlertController,
     private sanitizer: DomSanitizer,
-    private loadingController: LoadingController, // Nuevo
+    private loadingController: LoadingController,
     private eventosService: EventosService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private platform: Platform
   ) {
-    addIcons({ help, camera, trash, videocam });
+    addIcons({ help, camera, trash, videocam, save });
     this.registroForm = this.fb.group({
       idCodEvento: [this.generarCodigoEvento()],
       titulo: ['', Validators.required],
@@ -111,46 +102,65 @@ export class NuevoEventoPage implements OnDestroy {
   }
 
   async ngOnInit() {
-    this.usuarioActual = this.authService.getUsuarioActual();
-    this.registroForm.patchValue({
-      idUsuario: this.usuarioActual._id,
-    });
-
-    this.isAdmin = this.usuarioActual?.rol === 'admin'; // Verifica el rol
-
-    // Si no es admin, establece valores por defecto o deshabilita campos
-    if (!this.isAdmin) {
+    console.log('Inicializando NuevoEventoPage');
+    try {
+      this.usuarioActual = this.authService.getUsuarioActual();
+      if (!this.usuarioActual?._id) {
+        console.error('Usuario actual no definido');
+        await this.mostrarAlerta('Error', 'No se pudo cargar el usuario actual');
+        this.navCtrl.navigateRoot('/login');
+        return;
+      }
       this.registroForm.patchValue({
-        latitud: '0',
-        longitud: '0',
+        idUsuario: this.usuarioActual._id,
       });
+
+      this.isAdmin = this.usuarioActual?.rol === 'admin';
+
+      if (!this.isAdmin) {
+        this.registroForm.patchValue({
+          latitud: '0',
+          longitud: '0',
+        });
+      }
+
+      this.backbuttonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
+        console.log('Evento de retroceso disparado');
+        this.navCtrl.back();
+      });
+    } catch (error) {
+      console.error('Error en ngOnInit:', error);
+      await this.mostrarAlerta('Error', 'Error al inicializar la página');
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.videoPrevia) {
+      URL.revokeObjectURL(this.videoPrevia.toString());
+    }
+    if (this.backbuttonSubscription) {
+      this.backbuttonSubscription.unsubscribe();
     }
   }
 
   async mostrarAyuda(campo: CamposAyuda) {
-    // Usa el tipo CamposAyuda aquí
     const mensajesAyuda: Record<CamposAyuda, string> = {
-      titulo:
-        'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
-      descripcion:
-        'Describa detalladamente el mito o leyenda. Incluya características importantes.',
-      ubicacion:
-        'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
-      fechaCreacion: 'Puede modificar fecha de creación, de acuerdo a cuando sucedio el evento',
+      titulo: 'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
+      descripcion: 'Describa detalladamente el mito o leyenda. Incluya características importantes.',
+      ubicacion: 'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
+      fechaCreacion: 'Seleccione la fecha de creación del evento',
       latitud: 'Coordenada geográfica latitud (solo admin)',
       longitud: 'Coordenada geográfica longitud (solo admin)',
-      multimedia:
-        'Debe indicar fecha y adjuntar una imagen y/o un video relacionado con el evento',
+      multimedia: 'Adjunte una imagen y/o un video relacionado con el evento',
       comentario: 'Comentarios adicionales sobre el evento',
       popularidad: 'Nivel de popularidad (0-5) donde 5 es muy interesante',
       estado: 'Estado actual del evento (Activo/Inactivo)',
-      tipoContenido:
-        'Seleccione si es un Mito, Leyenda u Otro tipo de contenido',
+      tipoContenido: 'Seleccione si es un Mito, Leyenda u Otro tipo de contenido',
     };
 
     const alert = await this.alertController.create({
       header: 'Ayuda',
-      message: mensajesAyuda[campo], // Ahora TypeScript sabe que campo es una clave válida
+      message: mensajesAyuda[campo],
       buttons: ['Entendido'],
       cssClass: 'custom-alert',
     });
@@ -158,8 +168,6 @@ export class NuevoEventoPage implements OnDestroy {
     await alert.present();
   }
 
-  /* Método para mostrar una alerta con un mensaje personalizado. */
-  /* Este método se utiliza para mostrar mensajes de éxito o error al usuario. */
   async mostrarAlerta(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -170,8 +178,6 @@ export class NuevoEventoPage implements OnDestroy {
     await alert.present();
   }
 
-  /* Método para tomar una foto utilizando la cámara del dispositivo. */
-  /* Este método utiliza el plugin Camera de Capacitor para capturar una imagen. */
   async tomarFoto() {
     try {
       const imagen = await Camera.getPhoto({
@@ -184,27 +190,22 @@ export class NuevoEventoPage implements OnDestroy {
       this.registroForm.patchValue({
         imagen: {
           dataUrl: imagen.dataUrl,
-          name: `imagen_${Date.now()}.jpg`, // Asignar nombre único
+          name: `imagen_${Date.now()}.jpg`,
         },
       });
     } catch (error) {
       console.error('Error al tomar la foto:', error);
-      this.mostrarAlerta('Error', 'No se pudo capturar la imagen');
+      await this.mostrarAlerta('Error', 'No se pudo capturar la imagen');
     }
   }
 
-  /* Método para eliminar la imagen seleccionada. */
-  /* Este método muestra una alerta de confirmación antes de eliminar la imagen. */
   async eliminarImagen() {
     const alert = await this.alertController.create({
       header: 'Confirmar',
       message: '¿Estás seguro de eliminar la imagen seleccionada?',
       cssClass: 'custom-alert',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Eliminar',
           handler: () => {
@@ -219,13 +220,10 @@ export class NuevoEventoPage implements OnDestroy {
     await alert.present();
   }
 
-  /* Método para seleccionar un video desde el dispositivo. */
-  /* Este método utiliza el plugin FilePicker de Capacitor para seleccionar un video. */
   async seleccionarVideo() {
     try {
       const result = await FilePicker.pickFiles({
         types: ['video/*'],
-        // multiple: false,
         readData: true,
       });
 
@@ -235,23 +233,17 @@ export class NuevoEventoPage implements OnDestroy {
         this.esVideo = selectedFile.mimeType?.startsWith('video/') || false;
 
         if (this.esVideo && selectedFile.data) {
-          // Convertir los datos base64 a ArrayBuffer
           const byteCharacters = atob(selectedFile.data);
           const byteNumbers = new Array(byteCharacters.length);
           for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
           }
           const byteArray = new Uint8Array(byteNumbers);
-
-          // Crear Blob y URL
-          const blob = new Blob([byteArray], {
-            type: selectedFile.mimeType,
-          });
+          const blob = new Blob([byteArray], { type: selectedFile.mimeType });
           const videoUrl = URL.createObjectURL(blob);
           this.videoPrevia = this.sanitizer.bypassSecurityTrustUrl(videoUrl);
         }
 
-        // Guardar la información del archivo
         this.registroForm.patchValue({
           video: {
             path: selectedFile.path,
@@ -271,18 +263,13 @@ export class NuevoEventoPage implements OnDestroy {
     }
   }
 
-  /* Método para eliminar el video seleccionado. */
-  /* Este método muestra una alerta de confirmación antes de eliminar el video. */
   async eliminarVideo() {
     const alert = await this.alertController.create({
       header: 'Confirmar',
       message: '¿Estás seguro de eliminar el video seleccionado?',
       cssClass: 'custom-alert',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Eliminar',
           handler: () => {
@@ -302,24 +289,12 @@ export class NuevoEventoPage implements OnDestroy {
     await alert.present();
   }
 
-  /* Método para limpiar la imagen previa. */
-  ngOnDestroy() {
-    // Limpiar las URLs creadas para evitar fugas de memoria
-    if (this.videoPrevia) {
-      URL.revokeObjectURL(this.videoPrevia.toString());
-    }
-  }
-
   async onSubmit() {
     if (this.registroForm.valid) {
       this.cargando = true;
-
       const formData = new FormData();
-
-      // Obtener todos los valores del formulario
       const formDataValues = this.registroForm.value;
 
-      // Agregar todos los campos normales al FormData
       Object.keys(formDataValues).forEach((key) => {
         if (key !== 'imagen' && key !== 'video') {
           const value = formDataValues[key];
@@ -329,19 +304,12 @@ export class NuevoEventoPage implements OnDestroy {
         }
       });
 
-      // Procesar imagen si existe
-      if (
-        this.imagenPrevia &&
-        this.registroForm.get('imagen')?.value?.dataUrl
-      ) {
-        const base64Image = this.registroForm
-          .get('imagen')
-          ?.value?.dataUrl.split(',')[1];
+      if (this.imagenPrevia && this.registroForm.get('imagen')?.value?.dataUrl) {
+        const base64Image = this.registroForm.get('imagen')?.value?.dataUrl.split(',')[1];
         const blob = this.base64ToBlob(base64Image, 'image/jpeg');
         formData.append('imagen', blob, `imgEvento_${Date.now()}.jpg`);
       }
 
-      // Procesar video si existe
       const videoData = this.registroForm.get('video')?.value?.data;
       if (videoData) {
         const byteCharacters = atob(videoData);
@@ -354,34 +322,23 @@ export class NuevoEventoPage implements OnDestroy {
         formData.append('video', blob, `vidEvento_${Date.now()}.mp4`);
       }
 
-      // Enviar al servicio
       try {
         console.log('Enviando evento con archivos...');
         await this.eventosService.crearEvento(formData).toPromise();
-
-        // Primero ocultar el loader
         this.cargando = false;
-
-        // Esperar un ciclo de detección de cambios (100ms)
         await new Promise((resolve) => setTimeout(resolve, 100));
-
-        // Mostrar alerta y navegar
         await this.mostrarAlerta('Éxito', 'Evento guardado exitosamente');
         this.registroForm.reset();
         this.imagenPrevia = undefined;
         this.videoPrevia = undefined;
-        // this.navCtrl.navigateRoot('/tabs-user/tab4');
-        this.navCtrl.back(); // Esto regresará a la página anterior en el historial
+        this.navCtrl.back();
       } catch (error) {
         console.error('Error al guardar evento:', error);
         this.cargando = false;
         await this.mostrarAlerta('Error', 'No se pudo guardar el evento');
       }
     } else {
-      await this.mostrarAlerta(
-        'Error',
-        'Por favor complete todos los campos requeridos'
-      );
+      await this.mostrarAlerta('Error', 'Por favor complete todos los campos requeridos');
     }
   }
 
@@ -394,21 +351,14 @@ export class NuevoEventoPage implements OnDestroy {
     return new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
   }
 
-  // En tu componente TypeScript
   volver() {
-    this.navCtrl.back(); // Esto regresará a la página anterior en el historial
-  }
-
-  abrirSelectorFecha() {
-    this.fechaSeleccionada =
-      this.registroForm.get('fechaCreacion')?.value || new Date().toISOString();
-    this.mostrarSelectorFecha = true;
+    this.navCtrl.back();
   }
 
   fechaCambiada(event: any) {
+    console.log('Fecha cambiada:', event.detail.value);
     this.registroForm.patchValue({
       fechaCreacion: event.detail.value,
     });
-    this.mostrarSelectorFecha = false;
   }
 }
