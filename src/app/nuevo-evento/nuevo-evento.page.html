@@ -106,7 +106,6 @@
     <!-- Sección 3: Multimedia -->
     <ion-list>
       <ion-item>
-        
         <ion-label>Multimedia</ion-label>
 
         <ion-button class="ayuda" (click)="mostrarAyuda('multimedia')">
@@ -114,21 +113,35 @@
         </ion-button>
       </ion-item>
 
-      <ion-item>
-        <!-- Campo Fecha de Creación del Evento -->
-        <ion-label>Fecha de creación</ion-label>
-        <ion-datetime-button datetime="fechaCreacion"></ion-datetime-button>
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime
-              id="fechaCreacion"
-              formControlName="fechaCreacion"
-              presentation="date"
-            >
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
+      <!-- Campo Fecha de Creación del Evento -->
+      <ion-item class="fecha-item">
+        <ion-label class="date-label" >Fecha </ion-label>
+
+        <ion-input
+          [value]="registroForm.get('fechaCreacion')?.value | date: 'mediumDate'"
+          readonly
+          (click)="abrirSelectorFecha()"
+          class="inputFecha"
+        ></ion-input>
       </ion-item>
+
+      <ion-modal
+        [isOpen]="mostrarSelectorFecha"
+        (didDismiss)="mostrarSelectorFecha = false"
+      >
+        <ng-template>
+          <ion-content>
+            <ion-datetime
+              presentation="date"
+              [(ngModel)]="fechaSeleccionada"
+              (ionChange)="fechaCambiada($event)"
+              [showDefaultButtons]="true"
+              [doneText]="'Seleccionar'"
+              [cancelText]="'Cancelar'"
+            ></ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
 
       <!-- Seleccionar la Imagen -->
       <ion-item>
@@ -160,7 +173,11 @@
       <ion-item>
         <!-- Campo Video del Evento -->
         <ion-label>Video</ion-label>
-        <ion-button fill="clear" (click)="seleccionarVideo()" class="multimedia">
+        <ion-button
+          fill="clear"
+          (click)="seleccionarVideo()"
+          class="multimedia"
+        >
           <ion-icon name="videocam" slot="start"></ion-icon>
           Seleccionar
         </ion-button>
