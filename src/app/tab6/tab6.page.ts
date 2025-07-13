@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList,
-  IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonSpinner, IonButtons, IonIcon
+  IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSpinner, IonButtons, IonIcon
 } from '@ionic/angular/standalone';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { NavController } from '@ionic/angular';
   standalone: true,
   imports: [
     IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonCard,
-    IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonSpinner,
+    IonCardHeader, IonCardTitle, IonCardContent, IonSpinner,
     NgIf, NgFor, IonButtons, IonIcon
   ],
 })
@@ -96,6 +96,7 @@ export class Tab6Page implements OnInit {
     const alert = await this.alertCtrl.create({
       header: 'Confirmar',
       message: '¿Está seguro de eliminar este registro?',
+      cssClass: 'custom-alert',  
       buttons: [
         {
           text: 'No',

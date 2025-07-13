@@ -1,6 +1,6 @@
-<ion-header class="ion-no-border">
+<ion-header class="ion-no-border"> 
   <ion-toolbar>
-    <ion-title>Editar Evento</ion-title>
+    <ion-title>Editar Evento</ion-title> 
   </ion-toolbar>
 </ion-header>
 
@@ -10,17 +10,9 @@
     <div class="spinner-title">Actualizando...</div>
   </div>
   <form [formGroup]="patchForm" (ngSubmit)="onUpdate()" *ngIf="!cargando">
+
     <!-- Texto de identificación de Campos editables -->
     <div class="etiqueta-campos-editables">(*) Campos editables</div>
-    <div class="titulo-principal-evento">
-      {{ patchForm.get('titulo')?.value }}
-    </div>
-
-    <!-- Campo de Código de Evento -->
-    <ion-item>
-      <ion-label position="floating">Código</ion-label>
-      <ion-input formControlName="idCodEvento" readonly></ion-input>
-    </ion-item>
 
     <!-- Campo de titulo del Evento -->
     <ion-item>
@@ -41,19 +33,26 @@
       <ion-label position="floating">Ubicación <span class="asterisco-negrita">*</span>
       </ion-label>
       <ion-textarea formControlName="ubicacion" autoGrow="true"></ion-textarea>
-      <!--  <ion-input formControlName="ubicacion"></ion-input> -->
-    </ion-item>
+    </ion-item> 
 
     <!-- Campo de latitud de Evento -->
     <ion-item>
-      <ion-label position="floating">Latitud <span class="asterisco-negrita">*</span></ion-label>
-      <ion-input formControlName="latitud"></ion-input>
+      <ion-label position="floating">Latitud <span class="asterisco-negrita"></span></ion-label>
+      <ion-input 
+        formControlName="latitud"
+        [readonly]="!isAdmin"
+        [class.readonly-input]="!isAdmin">
+      </ion-input>
     </ion-item>
 
     <!-- Campo de longitud de Evento -->
     <ion-item>
-      <ion-label position="floating">Longitud <span class="asterisco-negrita">*</span></ion-label>
-      <ion-input formControlName="longitud"></ion-input>
+      <ion-label position="floating">Longitud <span class="asterisco-negrita"></span></ion-label>
+      <ion-input 
+        formControlName="longitud"
+        [readonly]="!isAdmin"
+        [class.readonly-input]="!isAdmin">
+      </ion-input>
     </ion-item>
 
     <!-- Campo Fecha de Creación del Evento -->
@@ -179,18 +178,7 @@
       Este campo es requerido
     </ion-note>
 
-    <!-- Campo de latitud de Evento -->
-    <ion-item>
-      <ion-label position="floating">id Usuario</ion-label>
-      <ion-input formControlName="idUsuario" readonly></ion-input>
-    </ion-item>
-    <!-- Puedes agregar más campos aquí, por ejemplo: -->
-    <!--
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <ion-input formControlName="descripcion"></ion-input>
-    </ion-item>
-    -->
+    
     <ion-grid class="botones-acciones">
       <div class="contenedor-boton">
         <ion-button type="submit" [disabled]="patchForm.invalid || cargando" expand="block" class="boton">

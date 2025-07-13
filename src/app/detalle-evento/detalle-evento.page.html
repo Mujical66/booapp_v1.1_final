@@ -20,9 +20,6 @@
         <!-- Descripción -->
         <p>{{ evento.descripcion }}</p>
 
-        <!-- Id -->
-        <h3><strong>Id:</strong> {{ evento.idCodEvento }}</h3>
-
         <!-- Ubicación -->
         <h3><strong>Ubicación:</strong> {{ evento.ubicacion }}</h3>
 
@@ -35,6 +32,9 @@
           <strong>Fecha de creación:</strong>
           {{ evento.fechaCreacion | date:'mediumDate' }}
         </h3>
+
+        <!-- Usuario -->
+        <h3><strong>Creador: </strong>{{ nombreUsuario }}</h3>
 
         <!-- Video -->
         <div class="video-container" *ngIf="evento.video">

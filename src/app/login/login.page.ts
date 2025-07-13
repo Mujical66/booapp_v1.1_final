@@ -16,7 +16,7 @@ import {
   IonLabel,
   IonButton,
   IonToast,
-  IonText
+  IonText,
 } from '@ionic/angular/standalone';
 
 import { CommonModule } from '@angular/common';
@@ -43,29 +43,26 @@ import { FormsModule } from '@angular/forms';
     IonLabel,
     IonButton,
     IonToast,
-    IonText
-  ]
+    IonText,
+  ],
 })
 export class LoginPage {
   credenciales = {
     email: '',
-    password: ''
+    password: '',
   };
 
   loading: boolean = false;
   showToast: boolean = false;
   toastMessage: string = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   // En tu componente LoginPage
   login() {
     const { email, password } = this.credenciales;
 
-    if (email === "admin" && password === "admin") {
+    if (email === 'admin' && password === 'admin') {
       this.router.navigate(['/tabs-admin']);
     }
 
@@ -94,12 +91,16 @@ export class LoginPage {
       error: (err) => {
         this.loading = false;
         this.mostrarError('Ocurrió un error al intentar iniciar sesión');
-      }
+      },
     });
   }
 
   private mostrarError(mensaje: string): void {
     this.toastMessage = mensaje;
     this.showToast = true;
+  }
+
+  async retornar() {
+    this.router.navigate(['/home']);
   }
 }

@@ -10,8 +10,13 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/a
 })
 export class Tab3Page {
   mensajePredeterminado = '¡Hola! Te comparto esta información desde Boo App.';
+  isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  constructor(private platform: Platform) {}
+  constructor(private platform: Platform) {
+    window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
+      this.isDarkMode = e.matches;
+    });
+  }
 
   compartirWhatsApp() {
     const texto = encodeURIComponent(this.mensajePredeterminado);

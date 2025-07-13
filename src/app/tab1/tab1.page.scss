@@ -1,4 +1,4 @@
-ion-toolbar {
+ion-toolbar { 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,7 +11,6 @@ ion-toolbar {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in-out;
-
   }
 
   --background: var(--color-menu);
@@ -77,23 +76,27 @@ ion-card img {
   height: auto;
   object-fit: cover;
   display: block;
-  /* para evitar espacios extra debajo de la imagen */
-}
-
-.regresa {
-  background-color: red;
 }
 
 .exit-button {
-  --color: var(--color-background);
-  /* Color blanco para el icono */
-  --padding-end: 16px;
-  /* Espaciado derecho */
-  --padding-start: 16px;
-  /* Espaciado izquierdo */
+  --background: white; /* Fondo blanco */
+  --color: var(--color-menu); /* Color azul del tema */
+  --border-radius: 50%; /* Forma redonda */
+  --padding: 8px; /* Espaciado interno */
+  width: 40px; /* Tamaño fijo */
+  height: 40px; /* Tamaño fijo */
+  margin-right: 8px; /* Espaciado derecho */
 
   ion-icon {
-    font-size: 24px;
-    /* Tamaño del icono */
+    font-size: 24px; /* Tamaño del icono */
   }
+
+  /* Efecto al presionar */
+  &:active {
+    opacity: 0.8;
+  }
+
+  /* Sombra para mejor visibilidad */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+

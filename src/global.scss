@@ -58,16 +58,16 @@ body {
 
 /* Estilo personalizado para el alert */
 .custom-alert {
-  --background: var(--color-menu);
+  --background: #ffffff;
   /* Fondo oscuro */
-  --color: var(--color-info);
+  --color: #000000;
   /* Color del texto principal (blanco) */
 
   /* Estilo del título (header) */
   .alert-title {
     font-size: 20px !important;
     font-weight: bold !important;
-    color: var(--color-buttons) !important;
+    color: #000000 !important;
     /* Rojo paranormal */
     text-align: center !important;
   }
@@ -76,7 +76,7 @@ body {
   .alert-sub-title {
     font-size: 18px !important;
     font-weight: bold !important;
-    color: var(--color-info) !important;
+    color: #b3b1b1 !important;
     /* Naranja */
     text-align: center !important;
   }
@@ -84,7 +84,7 @@ body {
   /* Estilo del mensaje */
   .alert-message {
     font-size: 14px !important;
-    color: #dddddd !important;
+    color: #b3b1b1 !important;
     /* Gris claro */
     text-align: center !important;
     line-height: 1.5 !important;
@@ -92,8 +92,82 @@ body {
 
   /* Estilo de los botones */
   .alert-button {
-    color: #f39c12 !important;
+    color: #071A4C !important;
     /* Naranja */
     font-weight: bold !important;
   }
 }
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --primary-color: #3880ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --primary-color: #428cff;
+  }
+}
+
+/* Añade esto junto con tus otros estilos globales */
+
+/* Alert personalizado - Fijo en blanco y negro */
+.custom-alert {
+  --background: #ffffff !important; /* Fondo blanco */
+  --color: #000000 !important; /* Texto negro principal */
+  
+  /* Cabecera del alert */
+  .alert-head {
+    background: #ffffff !important;
+    
+    .alert-title {
+      color: #000000 !important; /* Texto negro */
+      font-size: 20px !important;
+      font-weight: bold !important;
+      text-align: center !important;
+    }
+    
+    .alert-sub-title {
+      color: #5a5a5a !important; /* Gris oscuro para subtítulo */
+      font-size: 16px !important;
+    }
+  }
+  
+  /* Cuerpo del mensaje */
+  .alert-message {
+    color: #333333 !important; /* Gris muy oscuro casi negro */
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+  
+  /* Grupo de botones */
+  .alert-button-group {
+    border-top: 1px solid #f0f0f0 !important; /* Línea divisoria sutil */
+    
+    /* Botones normales */
+    .alert-button {
+      color: #071A4C !important; /* Mantienes tu azul oscuro */
+      font-weight: bold !important;
+      border-right: 1px solid #f0f0f0 !important;
+    }
+    
+    /* Último botón (sin borde derecho) */
+    .alert-button:last-child {
+      border-right: none !important;
+    }
+    
+    /* Botón de cancelar */
+    .alert-button.ion-color-secondary {
+      color: #5a5a5a !important; /* Gris para cancelar */
+    }
+  }
+  
+  /* Override para el backdrop */
+  &::part(backdrop) {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+}
+

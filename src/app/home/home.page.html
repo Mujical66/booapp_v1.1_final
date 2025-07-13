@@ -1,31 +1,47 @@
-<ion-header [translucent]="true"> 
+<ion-header [translucent]="true">
   <ion-toolbar>
     <!-- <ion-title>houme</ion-title> -->
-    <img src="assets/logoApp.png" alt="Logo App" class="banner-image">
+    <img src="assets/logoApp.png" alt="Logo App" class="banner-image" />
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content
+  [fullscreen]="true"
+  style="--background: var(--bg-color); color: var(--text-color)"
+>
   <ion-title size="large">Bienvenido a Boo</ion-title>
   <ion-title>Mitos y Leyendas</ion-title>
 
   <ion-grid>
     <ion-row>
       <ion-col size="5" size-md="5">
-        <img src="assets/logoFantasma.png" alt="Imagen descriptiva" class="imagen">
+        <img
+          src="assets/logoFantasma.png"
+          alt="Imagen descriptiva"
+          class="imagen"
+        />
       </ion-col>
       <ion-col size="7" size-md="7">
-        <ion-button expand="block" class="boton" (click)="goToTabs() ">Visitante</ion-button>
-        <ion-button expand="block" class="boton" (click)="boton2()">Iniciar Sesión</ion-button>
-        <ion-button expand="block" class="boton" (click)="boton3()">Registrarse</ion-button>
+        <ion-button expand="block" class="boton" (click)="goToTabs() "
+          >Visitante</ion-button
+        >
+        <ion-button expand="block" class="boton" (click)="boton2()"
+          >Iniciar Sesión</ion-button
+        >
+        <ion-button expand="block" class="boton" (click)="boton3()"
+          >Registrarse</ion-button
+        >
+
+        <ion-button class="btn-cerrar" expand="block" (click)="closeApp()">
+          Salir de BooApp
+        </ion-button> 
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <!-- Loader inicial -->
-  <!-- <ion-loading [isOpen]="cargandoInicial" message="Iniciando API desplegada en Render..." spinner="circles"
-    duration="15000">
-  </ion-loading> -->
-
-
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title class="footerText">© 2025 BooApp - Versión 1.0 - Todos los derechos reservados</ion-title>
+  </ion-toolbar>
+</ion-footer>

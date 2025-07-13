@@ -7,7 +7,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { IonicModule, AlertController, LoadingController } from '@ionic/angular';
+// import { IonIcon } from '@ionic/angular/standalone';
+import {
+  IonicModule,
+  AlertController,
+  LoadingController,
+} from '@ionic/angular';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -17,14 +22,18 @@ import { AuthService } from '../services/auth.service';
 import { EventosService } from '../services/eventos.service';
 import { NavController } from '@ionic/angular';
 
+import { addIcons } from 'ionicons';
+import { help, camera, trash, videocam } from 'ionicons/icons';
+
+type CamposAyuda = 'titulo' | 'descripcion' | 'ubicacion' | 'latitud' | 'longitud' | 
+                   'multimedia' | 'comentario' | 'popularidad' | 'estado' | 'tipoContenido';
+
 @Component({
   selector: 'app-detalle-evento',
   templateUrl: 'nuevo-evento.page.html',
   styleUrls: ['nuevo-evento.page.scss'],
   standalone: true,
-  imports: [
-    IonicModule, CommonModule, FormsModule, ReactiveFormsModule
-  ]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class NuevoEventoPage implements OnDestroy {
   usuarioActual: any;
@@ -35,20 +44,22 @@ export class NuevoEventoPage implements OnDestroy {
   videoPrevia: SafeUrl | undefined;
   esVideo: boolean = false;
   nombreArchivo: string = '';
+  isAdmin: boolean = false; // Añade esta propiedad
 
   private generarCodigoEvento(): string {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    const caracteres =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
     const longitud = 10;
     let resultado = '';
 
     for (let i = 0; i < longitud; i++) {
-      resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+      resultado += caracteres.charAt(
+        Math.floor(Math.random() * caracteres.length)
+      );
     }
 
     return resultado;
   }
-
-
 
   constructor(
     private authService: AuthService,
@@ -59,6 +70,7 @@ export class NuevoEventoPage implements OnDestroy {
     private eventosService: EventosService,
     private navCtrl: NavController
   ) {
+    addIcons({ help, camera, trash, videocam });
     this.registroForm = this.fb.group({
       idCodEvento: [this.generarCodigoEvento()],
       titulo: ['', Validators.required],
@@ -81,12 +93,46 @@ export class NuevoEventoPage implements OnDestroy {
 
   async ngOnInit() {
     this.usuarioActual = this.authService.getUsuarioActual();
-    console.log("prueba");
-    console.log(this.usuarioActual._id);
     this.registroForm.patchValue({
-      idUsuario: this.usuarioActual._id
+      idUsuario: this.usuarioActual._id,
     });
+
+    this.isAdmin = this.usuarioActual?.rol === 'admin'; // Verifica el rol
+
+    // Si no es admin, establece valores por defecto o deshabilita campos
+    if (!this.isAdmin) {
+      this.registroForm.patchValue({
+        latitud: '0',
+        longitud: '0',
+      });
+    }
   }
+
+  
+
+  async mostrarAyuda(campo: CamposAyuda) {  // Usa el tipo CamposAyuda aquí
+  const mensajesAyuda: Record<CamposAyuda, string> = {
+    titulo: 'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
+    descripcion: 'Describa detalladamente el mito o leyenda. Incluya características importantes.',
+    ubicacion: 'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
+    latitud: 'Coordenada geográfica latitud (solo admin)',
+    longitud: 'Coordenada geográfica longitud (solo admin)',
+    multimedia: 'Ingrese la fecha del evento, debe adjuntar una imagen y/o video relacionado con el evento',
+    comentario: 'Comentarios adicionales sobre el evento',
+    popularidad: 'Nivel de popularidad (0-5) donde 5 es muy interesante',
+    estado: 'Estado actual del evento (Activo/Inactivo)',
+    tipoContenido: 'Seleccione si es un Mito, Leyenda u Otro tipo de contenido'
+  };
+
+  const alert = await this.alertController.create({
+    header: 'Ayuda',
+    message: mensajesAyuda[campo],  // Ahora TypeScript sabe que campo es una clave válida
+    buttons: ['Entendido'],
+    cssClass: 'custom-alert'
+  });
+
+  await alert.present();
+}
 
   /* Método para mostrar una alerta con un mensaje personalizado. */
   /* Este método se utiliza para mostrar mensajes de éxito o error al usuario. */
@@ -94,6 +140,7 @@ export class NuevoEventoPage implements OnDestroy {
     const alert = await this.alertController.create({
       header: titulo,
       message: mensaje,
+      cssClass: 'custom-alert',
       buttons: ['OK'],
     });
     await alert.present();
@@ -128,6 +175,7 @@ export class NuevoEventoPage implements OnDestroy {
     const alert = await this.alertController.create({
       header: 'Confirmar',
       message: '¿Estás seguro de eliminar la imagen seleccionada?',
+      cssClass: 'custom-alert',
       buttons: [
         {
           text: 'Cancelar',
@@ -205,6 +253,7 @@ export class NuevoEventoPage implements OnDestroy {
     const alert = await this.alertController.create({
       header: 'Confirmar',
       message: '¿Estás seguro de eliminar el video seleccionado?',
+      cssClass: 'custom-alert',
       buttons: [
         {
           text: 'Cancelar',
@@ -247,7 +296,7 @@ export class NuevoEventoPage implements OnDestroy {
       const formDataValues = this.registroForm.value;
 
       // Agregar todos los campos normales al FormData
-      Object.keys(formDataValues).forEach(key => {
+      Object.keys(formDataValues).forEach((key) => {
         if (key !== 'imagen' && key !== 'video') {
           const value = formDataValues[key];
           if (value !== null && value !== undefined) {
@@ -257,8 +306,13 @@ export class NuevoEventoPage implements OnDestroy {
       });
 
       // Procesar imagen si existe
-      if (this.imagenPrevia && this.registroForm.get('imagen')?.value?.dataUrl) {
-        const base64Image = this.registroForm.get('imagen')?.value?.dataUrl.split(',')[1];
+      if (
+        this.imagenPrevia &&
+        this.registroForm.get('imagen')?.value?.dataUrl
+      ) {
+        const base64Image = this.registroForm
+          .get('imagen')
+          ?.value?.dataUrl.split(',')[1];
         const blob = this.base64ToBlob(base64Image, 'image/jpeg');
         formData.append('imagen', blob, `imgEvento_${Date.now()}.jpg`);
       }
@@ -285,7 +339,7 @@ export class NuevoEventoPage implements OnDestroy {
         this.cargando = false;
 
         // Esperar un ciclo de detección de cambios (100ms)
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Mostrar alerta y navegar
         await this.mostrarAlerta('Éxito', 'Evento guardado exitosamente');
@@ -294,14 +348,16 @@ export class NuevoEventoPage implements OnDestroy {
         this.videoPrevia = undefined;
         // this.navCtrl.navigateRoot('/tabs-user/tab4');
         this.navCtrl.back(); // Esto regresará a la página anterior en el historial
-
       } catch (error) {
         console.error('Error al guardar evento:', error);
         this.cargando = false;
         await this.mostrarAlerta('Error', 'No se pudo guardar el evento');
       }
     } else {
-      await this.mostrarAlerta('Error', 'Por favor complete todos los campos requeridos');
+      await this.mostrarAlerta(
+        'Error',
+        'Por favor complete todos los campos requeridos'
+      );
     }
   }
 
@@ -318,5 +374,4 @@ export class NuevoEventoPage implements OnDestroy {
   volver() {
     this.navCtrl.back(); // Esto regresará a la página anterior en el historial
   }
-
 }

@@ -9,8 +9,6 @@
   <ion-card *ngIf="usuarioActual">
     <ion-card-header>
       <ion-avatar class="avatar">
-        <!-- <img [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil" alt="Foto de perfil" /> -->
-
         <img
           [src]="usuarioActual.fotoPerfil ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil : 'assets/logoFantasma.png'"
           [alt]="usuarioActual.fotoPerfil" />
@@ -18,10 +16,9 @@
     </ion-card-header>
 
     <ion-card-content>
-      <!-- Modo Lectura -->
       <ion-list *ngIf="!editando">
         <ion-item>
-          <ion-label position="stacked">DNI</ion-label>
+          <ion-label position="stacked">Cédula</ion-label>
           <ion-input [value]="usuarioActual.IdDni" readonly></ion-input>
         </ion-item>
 
@@ -37,7 +34,6 @@
 
         <div class="ion-margin-top">
           <ion-button expand="block" (click)="iniciarEdicion()">Editar</ion-button>
-          <ion-button expand="block" color="danger" (click)="confirmarEliminar()">Eliminar Cuenta</ion-button>
         </div>
       </ion-list>
 

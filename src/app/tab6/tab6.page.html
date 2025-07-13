@@ -7,7 +7,7 @@
     </ion-buttons>
 
     <ion-title size="large">Bienvenido a Boo</ion-title>
-    <ion-title>Eliminación Eventos</ion-title>
+    <ion-title>Eliminación Eventos</ion-title> 
   </ion-toolbar>
 </ion-header>
 
@@ -27,8 +27,6 @@
       <ion-card-header>
         <ion-card-title class="small-title">Título: {{ item.titulo }}</ion-card-title>
 
-        <ion-card-subtitle class="small-subtitle">Código Evento: {{ item.idCodEvento }}</ion-card-subtitle>
-
       </ion-card-header>
       <ion-card-content class="descripcion-card">
         <strong>Descripción:</strong> {{ item.descripcion }}
@@ -38,12 +36,6 @@
           <ion-button class="boton" size="small" (click)="eliminarEvento(item)">Eliminar</ion-button>
         </div>
       </ion-card-content>
-      <!-- Si quieres agregar más información, usa ion-card-content -->
-      <!--
-      <ion-card-content>
-        Aquí puedes agregar más detalles del evento.
-      </ion-card-content>
-      -->
     </ion-card>
   </ion-list>
   <div *ngIf="!cargando && data && data.length === 0">
@@ -53,11 +45,4 @@
     <ion-spinner name="bubbles"></ion-spinner>
     <div class="spinner-title">Cargando datos desde la API...</div>
   </div>
-
-
-
-  <!-- <div class="contenedor-boton">
-    <ion-button expand="block" class="boton" [routerLink]="['/tabs-user/tab4']">Volver</ion-button>
-  </div> -->
-
 </ion-content>

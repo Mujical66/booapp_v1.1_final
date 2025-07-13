@@ -7,7 +7,6 @@ ion-toolbar {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in-out;
-
   }
 
   --background: var(--color-menu);
@@ -64,4 +63,11 @@ ion-content {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+}
+
+ion-card img { 
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }

@@ -12,7 +12,7 @@ import {
   IonToolbar,
   IonItem,
   IonLabel,
-  IonInput, // <-- Agrega este import
+  IonInput, 
   IonButton,
   IonIcon,
   IonGrid,
@@ -33,6 +33,7 @@ import { LoadingController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 
 import { ApiBooappService } from '../services/api-booapp.service';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -50,16 +51,16 @@ import { ApiBooappService } from '../services/api-booapp.service';
     FormsModule,
     IonItem,
     IonLabel,
-    IonInput, // <-- Agrega este import aquí también
+    IonInput, 
     IonButton,
     IonIcon,
     IonGrid,
-    ReactiveFormsModule, // <-- AGREGA ESTA LÍNEA
-    IonImg, // <-- Agrega este import para mostrar imágenes
+    ReactiveFormsModule, 
+    IonImg, 
     IonTextarea,
     IonSelect,
     IonSelectOption,
-    IonNote, // <-- Agrega este import para notas
+    IonNote, 
     IonSpinner,
   ]
 })
@@ -68,7 +69,6 @@ export class EditarPage implements OnInit {
   patchForm!: FormGroup;
   fechaCreacionFormateada: string = '';
 
-  // Agrega estas propiedades aquí
   imagenPrevia?: string;
   imagenAlmacenada?: string;
   videoPrevia?: string;
@@ -79,6 +79,8 @@ export class EditarPage implements OnInit {
   originalFormValue: any;
   cargando: boolean = false;
 
+  isAdmin: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -88,11 +90,18 @@ export class EditarPage implements OnInit {
     private loadingController: LoadingController,
     private navCtrl: NavController,
     private cdr: ChangeDetectorRef,
-    private apiService: ApiBooappService
+    private apiService: ApiBooappService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.checkAdminRole();
     this.inicializarData()
+  }
+
+   checkAdminRole() {
+    const usuarioActual = this.authService.getUsuarioActual();
+    this.isAdmin = usuarioActual?.rol === 'admin';
   }
 
   inicializarData() {
@@ -175,7 +184,8 @@ export class EditarPage implements OnInit {
       }
       const alert = await this.alertController.create({
         header: 'Confirmación',
-        message: '¿Seguro de Actualizar los Datos?',
+        message: '¿Seguro de Actualizar los Datos?', 
+        cssClass: 'custom-alert',
         buttons: [
           {
             text: 'No',
@@ -253,6 +263,7 @@ export class EditarPage implements OnInit {
                   const successAlert = await this.alertController.create({
                     header: 'Éxito',
                     message: 'El evento fue actualizado correctamente.',
+                    cssClass: 'custom-alert',
                     buttons: [
                       {
                         text: 'OK',

@@ -1,4 +1,4 @@
-ion-toolbar { 
+ion-toolbar {  
   .notificacion-banner {
     background-color: #f0f0f0;
     margin: 15px;
@@ -64,4 +64,11 @@ ion-content {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+}
+
+ion-card img { 
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }

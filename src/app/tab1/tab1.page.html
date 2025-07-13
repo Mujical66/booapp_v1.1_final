@@ -1,8 +1,8 @@
 <ion-header class="ion-no-border"> 
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="salir()" fill="clear" class="exit-button">
-        <ion-icon slot="icon-only" name="exit"></ion-icon>
+      <ion-button (click)="salir()" class="exit-button">
+        <ion-icon slot="icon-only" name="exit" class="  "></ion-icon> 
       </ion-button>
     </ion-buttons>
 
@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" style="--background: var(--bg-color);color: var(--text-color)">
 
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -27,7 +27,6 @@
     <ion-item *ngFor="let evento of eventosFiltrados" [routerLink]="['/detalle-evento', evento._id]" lines="none"
       button>
       <ion-card style="width: 100%;">
-        <!-- <img [src]="evento.imagen" [alt]="evento.titulo" /> -->
         <img
           [src]="evento.imagen ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.imagen : 'assets/noimagen.png'"
           [alt]="evento.titulo" (error)="onImageError($event)" />

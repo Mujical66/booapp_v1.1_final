@@ -237,4 +237,14 @@ export class AuthService {
       throw new Error('No se pudo procesar la imagen');
     }
   }
+
+  // Obtener nombre del usuario por ID
+  getNombreUsuarioById(idUsuario: string): Observable<string> {
+    return this.cargarUsuarios().pipe(
+      map(usuarios => {
+        const usuario = usuarios.find(u => u._id === idUsuario);
+        return usuario ? usuario.nombre : 'Usuario no encontrado';
+      })
+    );
+  }
 }

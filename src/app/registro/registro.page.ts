@@ -155,4 +155,8 @@ export class RegistroPage implements OnInit {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/noimagen.png';
   }
+
+  async retornar() {
+    this.router.navigate(['/home']);
+  }
 }

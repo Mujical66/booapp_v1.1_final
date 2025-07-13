@@ -1,13 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList,
-  IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonSpinner,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonList,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiBooappService } from '../services/api-booapp.service';
 import { NavController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
+
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tab4',
@@ -15,29 +28,56 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['tab4.page.scss'],
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonCard,
-    IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonSpinner,
-    NgIf, NgFor,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonList,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSpinner,
+    NgIf,
+    NgFor,
   ],
 })
 export class Tab4Page implements OnInit {
   data: any[] = [];
   cargando: boolean = true;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private apiService: ApiBooappService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private router: Router,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.apiService.eventos$.subscribe({
+    this.apiService.eventos$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (eventos) => {
-        this.data = eventos;
+        const usuarioActual = this.authService.getUsuarioActual();
+        console.log("Rol del Usuario " + usuarioActual?.rol);
+        if (usuarioActual?.rol != 'admin') {
+          console.log("Es diferente de admin");
+          if (usuarioActual && usuarioActual._id) {
+            // Filtrar eventos por idUsuario del usuario autenticado
+            this.data = eventos.filter(
+              (evento) => evento.idUsuario === usuarioActual._id
+            );
+          } else {
+            this.data = []; // Si no hay usuario autenticado, mostramos lista vacía
+            console.warn('No hay usuario autenticado');
+          }
+        } else {
+          this.data = eventos;
+        }
         this.cargando = false;
-        console.log('Datos actualizados en Tab4:', this.data);
+        console.log('Datos filtrados en Tab4:', this.data);
       },
       error: (error) => {
         this.cargando = false;

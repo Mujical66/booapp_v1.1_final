@@ -130,4 +130,8 @@ export class RecuperaClavePage {
     this.toastMessage = mensaje;
     this.showToast = true;
   }
+
+  async retornar() {
+    this.router.navigate(['/home']);
+  }
 }
