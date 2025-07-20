@@ -34,7 +34,7 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+@import "@ionic/angular/css/palettes/dark.system.css";
 
 ion-label,
 ion-title,
@@ -50,7 +50,6 @@ h5,
 h6 {
   font-family: "Geologica", sans-serif;
 }
-
 
 body {
   font-family: "Geologica", sans-serif;
@@ -92,7 +91,7 @@ body {
 
   /* Estilo de los botones */
   .alert-button {
-    color: #071A4C !important;
+    color: #071a4c !important;
     /* Naranja */
     font-weight: bold !important;
   }
@@ -118,56 +117,60 @@ body {
 .custom-alert {
   --background: #ffffff !important; /* Fondo blanco */
   --color: #000000 !important; /* Texto negro principal */
-  
+
   /* Cabecera del alert */
   .alert-head {
     background: #ffffff !important;
-    
+
     .alert-title {
       color: #000000 !important; /* Texto negro */
       font-size: 20px !important;
       font-weight: bold !important;
       text-align: center !important;
     }
-    
+
     .alert-sub-title {
       color: #5a5a5a !important; /* Gris oscuro para subtítulo */
       font-size: 16px !important;
     }
   }
-  
+
   /* Cuerpo del mensaje */
   .alert-message {
     color: #333333 !important; /* Gris muy oscuro casi negro */
     font-size: 14px !important;
     text-align: center !important;
   }
-  
+
   /* Grupo de botones */
   .alert-button-group {
     border-top: 1px solid #f0f0f0 !important; /* Línea divisoria sutil */
-    
+
     /* Botones normales */
     .alert-button {
-      color: #071A4C !important; /* Mantienes tu azul oscuro */
+      color: #071a4c !important; /* Mantienes tu azul oscuro */
       font-weight: bold !important;
       border-right: 1px solid #f0f0f0 !important;
     }
-    
+
     /* Último botón (sin borde derecho) */
     .alert-button:last-child {
       border-right: none !important;
     }
-    
+
     /* Botón de cancelar */
     .alert-button.ion-color-secondary {
       color: #5a5a5a !important; /* Gris para cancelar */
     }
   }
-  
+
   /* Override para el backdrop */
   &::part(backdrop) {
     background: rgba(0, 0, 0, 0.5) !important;
   }
 }
 
+ion-tab-button {
+  --padding-top: 2px;
+  --padding-bottom: 2px;
+}

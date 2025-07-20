@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/angular/standalone';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton ],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton],
 })
 export class Tab3Page {
-  mensajePredeterminado = '¡Hola! Te comparto esta información desde Boo App.';
+  mensajePredeterminado =
+    'BooApp es una aplicación que te permite explorar y descubrir los Mitos y Leyendas de la ciudad de Caracas. Con una interfaz intuitiva y con un contenido enriquecedor, es perfecta para quienes aman las historias fascinantes y ocultas';
   isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   constructor(private platform: Platform) {

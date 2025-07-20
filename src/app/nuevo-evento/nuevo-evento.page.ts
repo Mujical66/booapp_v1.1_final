@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { 
+import {
   IonInput,
   IonicModule,
   AlertController,
@@ -107,12 +107,16 @@ export class NuevoEventoPage implements OnDestroy {
       this.usuarioActual = this.authService.getUsuarioActual();
       if (!this.usuarioActual?._id) {
         console.error('Usuario actual no definido');
-        await this.mostrarAlerta('Error', 'No se pudo cargar el usuario actual');
+        await this.mostrarAlerta(
+          'Error',
+          'No se pudo cargar el usuario actual'
+        );
         this.navCtrl.navigateRoot('/login');
         return;
       }
       this.registroForm.patchValue({
         idUsuario: this.usuarioActual._id,
+        estado: 'Inactivo',
       });
 
       this.isAdmin = this.usuarioActual?.rol === 'admin';
@@ -124,10 +128,11 @@ export class NuevoEventoPage implements OnDestroy {
         });
       }
 
-      this.backbuttonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
-        console.log('Evento de retroceso disparado');
-        this.navCtrl.back();
-      });
+      this.backbuttonSubscription =
+        this.platform.backButton.subscribeWithPriority(10, () => {
+          console.log('Evento de retroceso disparado');
+          this.navCtrl.back();
+        });
     } catch (error) {
       console.error('Error en ngOnInit:', error);
       await this.mostrarAlerta('Error', 'Error al inicializar la página');
@@ -145,17 +150,21 @@ export class NuevoEventoPage implements OnDestroy {
 
   async mostrarAyuda(campo: CamposAyuda) {
     const mensajesAyuda: Record<CamposAyuda, string> = {
-      titulo: 'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
-      descripcion: 'Describa detalladamente el mito o leyenda. Incluya características importantes.',
-      ubicacion: 'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
+      titulo:
+        'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
+      descripcion:
+        'Describa detalladamente el mito o leyenda. Incluya características importantes.',
+      ubicacion:
+        'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
       fechaCreacion: 'Seleccione la fecha de creación del evento',
       latitud: 'Coordenada geográfica latitud (solo admin)',
       longitud: 'Coordenada geográfica longitud (solo admin)',
-      multimedia: 'Adjunte una imagen y/o un video relacionado con el evento',
+      multimedia: 'Suba una imagen (máx 1 MB) y/o un video (máx 3 MB)',
       comentario: 'Comentarios adicionales sobre el evento',
       popularidad: 'Nivel de popularidad (0-5) donde 5 es muy interesante',
       estado: 'Estado actual del evento (Activo/Inactivo)',
-      tipoContenido: 'Seleccione si es un Mito, Leyenda u Otro tipo de contenido',
+      tipoContenido:
+        'Seleccione si es un Mito, Leyenda u Otro tipo de contenido',
     };
 
     const alert = await this.alertController.create({
@@ -304,8 +313,13 @@ export class NuevoEventoPage implements OnDestroy {
         }
       });
 
-      if (this.imagenPrevia && this.registroForm.get('imagen')?.value?.dataUrl) {
-        const base64Image = this.registroForm.get('imagen')?.value?.dataUrl.split(',')[1];
+      if (
+        this.imagenPrevia &&
+        this.registroForm.get('imagen')?.value?.dataUrl
+      ) {
+        const base64Image = this.registroForm
+          .get('imagen')
+          ?.value?.dataUrl.split(',')[1];
         const blob = this.base64ToBlob(base64Image, 'image/jpeg');
         formData.append('imagen', blob, `imgEvento_${Date.now()}.jpg`);
       }
@@ -338,7 +352,10 @@ export class NuevoEventoPage implements OnDestroy {
         await this.mostrarAlerta('Error', 'No se pudo guardar el evento');
       }
     } else {
-      await this.mostrarAlerta('Error', 'Por favor complete todos los campos requeridos');
+      await this.mostrarAlerta(
+        'Error',
+        'Por favor complete todos los campos requeridos'
+      );
     }
   }
 

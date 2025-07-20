@@ -1,35 +1,46 @@
-<ion-header class="ion-no-border"> 
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button (click)="salir()" class="exit-button">
-        <ion-icon slot="icon-only" name="exit" class="  "></ion-icon> 
+        <ion-icon slot="icon-only" name="exit" class="  "></ion-icon>
       </ion-button>
     </ion-buttons>
 
-    <ion-title size="large">Bienvenido a Boo</ion-title>
-    <ion-title>Mitos y Leyendas</ion-title>
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
+    <ion-title>Eventos Paranormales</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" style="--background: var(--bg-color);color: var(--text-color)">
-
+<ion-content
+  [fullscreen]="true"
+  style="--background: var(--bg-color); color: var(--text-color)"
+>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-searchbar (ionInput)="aplicarFiltro($any($event).target.value)" debounce="500">
+  <ion-searchbar
+    (ionInput)="aplicarFiltro($any($event).target.value)"
+    debounce="500"
+  >
   </ion-searchbar>
 
   <!-- Lista de Cards -->
   <ion-list>
-    <ion-item *ngFor="let evento of eventosFiltrados" [routerLink]="['/detalle-evento', evento._id]" lines="none"
-      button>
-      <ion-card style="width: 100%;">
+    <ion-item
+      *ngFor="let evento of eventosFiltrados"
+      [routerLink]="['/detalle-evento', evento._id]"
+      lines="none"
+      button
+    >
+      <ion-card style="width: 100%">
         <img
           [src]="evento.imagen ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.imagen : 'assets/noimagen.png'"
-          [alt]="evento.titulo" (error)="onImageError($event)" />
+          [alt]="evento.titulo"
+          (error)="onImageError($event)"
+        />
         <ion-card-header>
           <ion-card-title>{{ evento.titulo }}</ion-card-title>
           <ion-card-subtitle>{{ evento.ubicacion }}</ion-card-subtitle>
@@ -38,10 +49,15 @@
     </ion-item>
   </ion-list>
 
-
   <!-- Alert desde HTML -->
-  <ion-alert #miAlerta header="¡Nuevo Evento!" [subHeader]="eventoMasReciente ? eventoMasReciente.titulo : ''"
-    message="No pierdas tiempo, aprovecha para verlo" [buttons]="alertButtons" cssClass="custom-alert centered-alert">
+  <ion-alert
+    #miAlerta
+    header="¡Nuevo Evento!"
+    [subHeader]="eventoMasReciente ? eventoMasReciente.titulo : ''"
+    message="No pierdas tiempo, aprovecha para verlo"
+    [buttons]="alertButtons"
+    cssClass="custom-alert centered-alert"
+  >
   </ion-alert>
 
   <div *ngIf="mensajeNoResultados" class="no-results">

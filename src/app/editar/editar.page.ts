@@ -12,7 +12,7 @@ import {
   IonToolbar,
   IonItem,
   IonLabel,
-  IonInput, 
+  IonInput,
   IonButton,
   IonIcon,
   IonGrid,
@@ -34,8 +34,22 @@ import { NavController } from '@ionic/angular';
 
 import { ApiBooappService } from '../services/api-booapp.service';
 import { AuthService } from '../services/auth.service';
+import { addIcons } from 'ionicons';
 
+import { help, camera, trash, videocam, save } from 'ionicons/icons';
 
+type CamposAyuda =
+  | 'titulo'
+  | 'descripcion'
+  | 'ubicacion'
+  | 'latitud'
+  | 'longitud'
+  | 'fechaCreacion'
+  | 'multimedia'
+  | 'comentario'
+  | 'popularidad'
+  | 'revision'
+  | 'tipoContenido';
 
 @Component({
   selector: 'app-editar',
@@ -51,21 +65,20 @@ import { AuthService } from '../services/auth.service';
     FormsModule,
     IonItem,
     IonLabel,
-    IonInput, 
+    IonInput,
     IonButton,
     IonIcon,
     IonGrid,
-    ReactiveFormsModule, 
-    IonImg, 
+    ReactiveFormsModule,
+    IonImg,
     IonTextarea,
     IonSelect,
     IonSelectOption,
-    IonNote, 
+    IonNote,
     IonSpinner,
-  ]
+  ],
 })
 export class EditarPage implements OnInit {
-
   patchForm!: FormGroup;
   fechaCreacionFormateada: string = '';
 
@@ -92,16 +105,49 @@ export class EditarPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private apiService: ApiBooappService,
     private authService: AuthService
-  ) { }
+  ) {
+    addIcons({ help, camera, trash, videocam, save });
+  }
 
   ngOnInit() {
     this.checkAdminRole();
-    this.inicializarData()
+    this.inicializarData();
   }
 
-   checkAdminRole() {
+  checkAdminRole() {
     const usuarioActual = this.authService.getUsuarioActual();
     this.isAdmin = usuarioActual?.rol === 'admin';
+  }
+
+  async mostrarAyuda(campo: CamposAyuda) {
+    const mensajesAyuda: Record<CamposAyuda, string> = {
+      titulo:
+        'Ingrese un título descriptivo para el evento. Ejemplo: "La Llorona en el Río"',
+      descripcion:
+        'Describa detalladamente el mito o leyenda. Incluya características importantes.',
+      ubicacion:
+        'Indique la ubicación exacta asociada al evento. Ejemplo: "Avenida Lecuna, cerca Teatro Nacional, Caracas"',
+      fechaCreacion: 'Solo en carga del evento',
+      latitud:
+        'Coordenada de latitud (solo admin) en grados decimales, se pueden obtener en https://www.mapcoordinates.net/es',
+      longitud:
+        'Coordenada de longitud (solo admin) en grados decimales, se pueden obtener en https://www.mapcoordinates.net/es',
+      multimedia: 'Suba una imagen (máx 1 MB) y/o un video (máx 3 MB)',
+      comentario: 'Comentarios adicionales sobre el evento',
+      popularidad: 'Solo en carga del evento',
+      revision: 'Comentario emitido por Admin',
+      tipoContenido:
+        'Seleccione si es un Mito, Leyenda u Otro tipo de contenido',
+    };
+
+    const alert = await this.alertController.create({
+      header: 'Ayuda',
+      message: mensajesAyuda[campo],
+      buttons: ['Entendido'],
+      cssClass: 'custom-alert',
+    });
+
+    await alert.present();
   }
 
   inicializarData() {
@@ -162,12 +208,13 @@ export class EditarPage implements OnInit {
 
       // Formatea la fecha si existe
       if (params['fechaCreacion']) {
-        this.fechaCreacionFormateada = this.formatFecha(params['fechaCreacion']);
+        this.fechaCreacionFormateada = this.formatFecha(
+          params['fechaCreacion']
+        );
         this.patchForm.patchValue({ fechaCreacion: params['fechaCreacion'] });
       }
     });
   }
-
 
   // Método para actualizar el evento
   async onUpdate() {
@@ -184,7 +231,7 @@ export class EditarPage implements OnInit {
       }
       const alert = await this.alertController.create({
         header: 'Confirmación',
-        message: '¿Seguro de Actualizar los Datos?', 
+        message: '¿Seguro de Actualizar los Datos?',
         cssClass: 'custom-alert',
         buttons: [
           {
@@ -224,7 +271,11 @@ export class EditarPage implements OnInit {
                 console.log('Archivo video:', fields.video);
                 body = new FormData();
                 for (const key in fields) {
-                  if (fields[key] !== undefined && fields[key] !== null && fields[key] !== '') {
+                  if (
+                    fields[key] !== undefined &&
+                    fields[key] !== null &&
+                    fields[key] !== ''
+                  ) {
                     body.append(key, fields[key]);
                   }
                 }
@@ -251,7 +302,9 @@ export class EditarPage implements OnInit {
                   this.videoAlmacenado = evento.video
                     ? `https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/${evento.video}`
                     : undefined;
-                  this.fechaCreacionFormateada = this.formatFecha(evento.fechaCreacion);
+                  this.fechaCreacionFormateada = this.formatFecha(
+                    evento.fechaCreacion
+                  );
 
                   // Forzar detección de cambios para actualizar la vista
                   this.cdr.detectChanges();
@@ -281,7 +334,9 @@ export class EditarPage implements OnInit {
                   console.error('Error en PATCH:', error);
                   const errorAlert = await this.alertController.create({
                     header: 'Error',
-                    message: error.error?.message || 'Ocurrió un error al actualizar el evento. Intenta nuevamente.',
+                    message:
+                      error.error?.message ||
+                      'Ocurrió un error al actualizar el evento. Intenta nuevamente.',
                     buttons: ['OK'],
                   });
                   await errorAlert.present();

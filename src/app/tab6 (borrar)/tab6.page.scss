@@ -1,0 +1,78 @@
+ion-toolbar {
+  .notificacion-banner {
+    background-color: #f0f0f0;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  --background: var(--color-menu);
+  --color: #ffffff;
+}
+
+ion-title.title-large {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+ion-title {
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.boton {
+  margin-bottom: 25px;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  display: block; /* para que respete el width */
+  margin-left: auto; /* centra horizontal */
+  margin-right: auto; /* centra horizontal */
+}
+
+ion-button {
+  --background: var(--color-buttons);
+  --border-radius: 10px;
+}
+
+ion-content {
+  display: flex;
+  justify-content: center; /* centra horizontal */
+  align-items: center; /* centra vertical */
+  flex-direction: column; /* para que los botones estén en columna */
+  height: 100%;
+  padding: 0 16px;
+}
+
+.contenedor-botones {
+  margin: 20px 0;
+}
+
+.icon-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+ion-card {
+  width: 100%;
+  margin: 0; /* Elimina márgenes por defecto */
+}
+
+ion-card img {
+  width: 100%;
+  height: 240px; /* Altura fija que prefieras */
+  object-fit: cover;
+  display: block;
+}

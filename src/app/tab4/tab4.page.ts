@@ -11,6 +11,9 @@ import {
   IonCardTitle,
   IonCardContent,
   IonSpinner,
+  IonBadge,
+  IonButtons,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -21,6 +24,9 @@ import { AuthService } from '../services/auth.service';
 
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+
+import { addIcons } from 'ionicons';
+import { exit } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab4',
@@ -41,6 +47,9 @@ import { Subject } from 'rxjs';
     IonSpinner,
     NgIf,
     NgFor,
+    IonBadge,
+    IonButtons,
+    IonIcon,
   ],
 })
 export class Tab4Page implements OnInit {
@@ -54,16 +63,19 @@ export class Tab4Page implements OnInit {
     private toastCtrl: ToastController,
     private router: Router,
     private navCtrl: NavController,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private alertController: AlertController
+  ) {
+    addIcons({ exit });
+  }
 
   ngOnInit() {
     this.apiService.eventos$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (eventos) => {
         const usuarioActual = this.authService.getUsuarioActual();
-        console.log("Rol del Usuario " + usuarioActual?.rol);
+        console.log('Rol del Usuario ' + usuarioActual?.rol);
         if (usuarioActual?.rol != 'admin') {
-          console.log("Es diferente de admin");
+          console.log('Es diferente de admin');
           if (usuarioActual && usuarioActual._id) {
             // Filtrar eventos por idUsuario del usuario autenticado
             this.data = eventos.filter(
@@ -165,6 +177,125 @@ export class Tab4Page implements OnInit {
         },
       ],
     });
+    await alert.present();
+  }
+
+  // En tu tab4.page.ts
+  get esAdmin(): boolean {
+    return this.authService.getUsuarioActual()?.rol === 'admin';
+  }
+
+  // Añade estas funciones en tu Tab4Page
+
+  async aprobarEvento(item: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar Aprobación',
+      message:
+        '¿Está seguro de aprobar este evento?, ¿Ya cargo las coordenadas de ubicación del mismo y el comentario de revisión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Aprobar',
+          handler: () => {
+            this.actualizarEstadoEvento(
+              item._id,
+              'Activo',
+              'Evento aprobado con éxito'
+            );
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async rechazarEvento(item: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar Rechazo',
+      message:
+        '¿Está seguro de rechazar este evento? ¿Coloco un comentario de revisión con el motivo del rechazo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Rechazar',
+          handler: () => {
+            this.actualizarEstadoEvento(
+              item._id,
+              'Cancelado',
+              'Evento rechazado'
+            );
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private actualizarEstadoEvento(
+    eventoId: string,
+    nuevoEstado: string,
+    mensajeExito: string
+  ) {
+    this.apiService.actualizarEstadoEvento(eventoId, nuevoEstado).subscribe({
+      next: async () => {
+        this.apiService.cargarEventos(); // Recargar la lista de eventos
+
+        const toast = await this.toastCtrl.create({
+          message: mensajeExito,
+          duration: 2000,
+          color: 'success',
+          position: 'top',
+        });
+        await toast.present();
+      },
+      error: async (error) => {
+        console.error('Error al actualizar estado:', error);
+
+        const toast = await this.toastCtrl.create({
+          message: 'Error al actualizar el estado del evento',
+          duration: 2000,
+          color: 'danger',
+          position: 'top',
+        });
+        await toast.present();
+      },
+    });
+  }
+
+  async salir() {
+    // Verificar si hay un usuario logueado (admin o turista)
+    const usuario = this.authService.getUsuarioActual();
+
+    const alertConfig = {
+      cssClass: 'custom-alert',
+      header: usuario ? 'Cerrar sesión' : 'Salir de la app',
+      message: usuario ? '¿Desea cerrar su sesión?' : '¿Desea salir al inicio?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancel-button',
+        },
+        {
+          text: 'Sí',
+          cssClass: 'exit-button',
+          handler: () => {
+            if (usuario) {
+              this.authService.cerrarSesion(); // Cierra sesión solo si está logueado
+            }
+            this.router.navigate(['/home']); // Redirige al inicio en ambos casos
+          },
+        },
+      ],
+    };
+
+    const alert = await this.alertController.create(alertConfig);
     await alert.present();
   }
 }

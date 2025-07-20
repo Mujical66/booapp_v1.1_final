@@ -1,4 +1,3 @@
-// tab1.page.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -20,7 +19,7 @@ import {
 } from '@ionic/angular/standalone';
 import { RouterLink, Router } from '@angular/router';
 import { EventosService, Evento } from '../services/eventos.service';
-import { AuthService } from '../services/auth.service'; // Asegúrate de que la ruta sea correcta
+import { AuthService } from '../services/auth.service';
 import { addIcons } from 'ionicons';
 import { exit, help } from 'ionicons/icons';
 import { AlertController } from '@ionic/angular';
@@ -91,10 +90,11 @@ export class Tab1Page implements OnInit {
   }
 
   async salir() {
-    const alert = await this.alertController.create({
-      cssClass: 'custom-alert', // Clase CSS personalizada
-      header: 'Confirmar',
-      message: '¿Desea cerrar sesión?',
+    const usuario = this.authService.getUsuarioActual();
+    const alertConfig = {
+      cssClass: 'custom-alert',
+      header: usuario ? 'Cerrar sesión' : 'Salir de la app',
+      message: usuario ? '¿Desea cerrar su sesión?' : '¿Desea salir al inicio?',
       buttons: [
         {
           text: 'Cancelar',
@@ -102,16 +102,19 @@ export class Tab1Page implements OnInit {
           cssClass: 'cancel-button',
         },
         {
-          text: 'Sí, salir',
+          text: 'Sí',
           cssClass: 'exit-button',
           handler: () => {
-            this.authService.cerrarSesion();
+            if (usuario) {
+              this.authService.cerrarSesion();
+            }
             this.router.navigate(['/home']);
           },
         },
       ],
-    });
+    };
 
+    const alert = await this.alertController.create(alertConfig);
     await alert.present();
   }
 
@@ -119,17 +122,26 @@ export class Tab1Page implements OnInit {
     this.eventosService.obtenerEventos().subscribe({
       next: (response) => {
         if (response.success) {
-          this.eventos = response.data.colEventosleps;
+          // Filtrar solo eventos activos
+          this.eventos = response.data.colEventosleps.filter(
+            (evento: Evento) => evento.estado === 'Activo'
+          );
+
           this.eventosFiltrados = [...this.eventos];
-          this.mostrarEventoMasReciente();
+
+          if (this.eventos.length === 0) {
+            this.mensajeNoResultados = 'No hay eventos activos disponibles.';
+          } else {
+            this.mostrarEventoMasReciente();
+          }
         } else {
           console.warn('API no devolvió éxito:', response.message);
-          this.mensajeNoResultados = 'No se encontraron eventos.';
+          this.mensajeNoResultados = 'No se encontraron eventos activos.';
         }
       },
       error: (err) => {
         console.error('Error al cargar eventos:', err);
-        this.mensajeNoResultados = 'No se pudieron cargar los eventos.';
+        this.mensajeNoResultados = 'Error al cargar eventos activos.';
       },
     });
   }
@@ -140,16 +152,16 @@ export class Tab1Page implements OnInit {
   }
 
   async mostrarEventoMasReciente() {
-    this.eventoMasReciente = this.eventosService.obtenerEventoMasReciente(
-      this.eventos
-    );
+    // Ya están filtrados como activos, pero por si acaso
+    const eventosActivos = this.eventos.filter((e) => e.estado === 'Activo');
+    this.eventoMasReciente =
+      this.eventosService.obtenerEventoMasReciente(eventosActivos);
 
     if (!this.eventoMasReciente) {
-      console.warn('No hay eventos disponibles.');
+      console.warn('No hay eventos activos disponibles.');
       return;
     }
 
-    // Mostrar alert automáticamente
     setTimeout(
       () => {
         this.miAlerta.present();
@@ -160,17 +172,24 @@ export class Tab1Page implements OnInit {
 
   aplicarFiltro(termino: string) {
     termino = termino?.toLowerCase() || '';
+
     if (!termino) {
-      this.eventosFiltrados = this.eventos;
+      this.eventosFiltrados = this.eventos; // Ya vienen filtrados como activos
+      this.mensajeNoResultados =
+        this.eventos.length === 0 ? 'No hay eventos activos.' : '';
       return;
     }
+
     this.eventosFiltrados = this.eventos.filter(
       (evento) =>
-        evento.titulo.toLowerCase().includes(termino) ||
-        evento.ubicacion.toLowerCase().includes(termino)
+        evento.estado === 'Activo' && // Filtro redundante por seguridad
+        (evento.titulo.toLowerCase().includes(termino) ||
+          evento.ubicacion.toLowerCase().includes(termino))
     );
 
     this.mensajeNoResultados =
-      this.eventosFiltrados.length === 0 ? 'No se encontraron eventos.' : '';
+      this.eventosFiltrados.length === 0
+        ? 'No se encontraron eventos activos con ese criterio.'
+        : '';
   }
 }

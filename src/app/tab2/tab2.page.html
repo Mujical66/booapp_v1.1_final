@@ -1,28 +1,41 @@
-<ion-header class="ion-no-border">  
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">Bienvenido a Boo</ion-title>
-    <ion-title>Rutas Paranormales</ion-title>
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
+    <ion-title>Eventos Paranormales</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="fondo-azul-claro texto-gris-oscuro">
-  <ion-list *ngIf="!cargandor">
-    <ng-container *ngFor="let item of data; let index = index">
+  <!-- Lista de eventos activos -->
+  <ion-list *ngIf="!cargandor && eventosActivos.length > 0">
+    <ng-container *ngFor="let item of eventosActivos; let index = index">
       <ion-item>
         <ion-avatar slot="start">
           <img
             *ngIf="item.imagen"
             [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
             alt="Imagen de la ruta"
+            (error)="item.imagen = null"
+            Manejo
+            de
+            error
+            de
+            imagen
+            --
+          />
+          <img
+            *ngIf="!item.imagen"
+            src="../../assets/noimagen.png"
+            alt="Imagen por defecto"
           />
         </ion-avatar>
         <ion-label>
           <h2>{{ item.titulo }}</h2>
           <p>
             <strong>Longitud:</strong> {{ item.longitud }}<br />
-            <strong>Latitud:</strong> {{ item.latitud }} <br>
-            <strong>Ubicación:</strong> {{ item.ubicacion }}
-
+            <strong>Latitud:</strong> {{ item.latitud }} <br />
+            <strong>Ubicación:</strong> {{ item.ubicacion }}<br />
+            <strong>Estado:</strong> {{ item.estado }}
           </p>
           <ion-button
             size="small"
@@ -48,12 +61,22 @@
       </ion-item>
     </ng-container>
   </ion-list>
-  <div *ngIf="!cargandor && data && data.length === 0">
-    No hay datos para mostrar.
-  </div>
-  <!-- <div *ngIf="cargandor" class="spinner-container">
-    <ion-spinner name="bubbles"></ion-spinner>
-    <div class="spinner-title">Cargando...</div>
-  </div> -->
-</ion-content>
 
+  <!-- Mensaje cuando no hay eventos activos -->
+  <div
+    *ngIf="!cargandor && eventosActivos.length === 0"
+    class="no-results-message"
+  >
+    <ion-icon
+      name="warning-outline"
+      style="font-size: 48px; color: #7b5af1"
+    ></ion-icon>
+    <p>{{ mensajeNoResultados }}</p>
+  </div>
+
+  <!-- Spinner de carga -->
+  <div *ngIf="cargandor" class="spinner-container">
+    <ion-spinner name="bubbles"></ion-spinner>
+    <div class="spinner-title">Cargando eventos activos...</div>
+  </div>
+</ion-content>

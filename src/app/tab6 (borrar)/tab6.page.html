@@ -1,4 +1,4 @@
-<ion-header class="ion-no-border"> 
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button (click)="salir()" fill="clear" class="exit-button">
@@ -6,34 +6,40 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title size="large">Bienvenido a Boo</ion-title>
-    <ion-title>Eliminación Eventos</ion-title> 
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
+    <ion-title>Eliminación Eventos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-header collapse="condense">
     <ion-toolbar class="toolbar-azul-oscuro">
       <ion-title size="large">Eventos Paranormales</ion-title>
     </ion-toolbar>
   </ion-header>
- 
+
   <ion-list *ngIf="!cargando && data && data.length > 0">
     <ion-card *ngFor="let item of data">
-      <img *ngIf="item.imagen" [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
-        alt="Imagen del evento" class="card-img" />
+      <img
+        *ngIf="item.imagen"
+        [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
+        alt="Imagen del evento"
+        class="card-img"
+      />
 
       <ion-card-header>
-        <ion-card-title class="small-title">Título: {{ item.titulo }}</ion-card-title>
-
+        <ion-card-title class="small-title"
+          >Título: {{ item.titulo }}</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content class="descripcion-card">
         <strong>Descripción:</strong> {{ item.descripcion }}
         <div class="icon-actions">
           <!-- Después -->
           <!-- <ion-button class="boton" size="small" (click)="editarEvento(item)">Editar</ion-button> -->
-          <ion-button class="boton" size="small" (click)="eliminarEvento(item)">Eliminar</ion-button>
+          <ion-button class="boton" size="small" (click)="eliminarEvento(item)"
+            >Eliminar</ion-button
+          >
         </div>
       </ion-card-content>
     </ion-card>

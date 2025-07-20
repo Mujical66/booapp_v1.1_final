@@ -17,7 +17,7 @@ export interface Evento {
   tipoContenido?: string;
   comentario?: string;
   popularidad?: number;
-  estado?: string;
+  estado?: 'Activo' | 'Inactivo' | 'Cancelado';
   fechaVisual?: string;
   idCodEvento?: string;
   idUsuario?: string;
@@ -33,19 +33,32 @@ export interface ApiResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventosService {
-  private apiUrl = 'https://booapp-api.onrender.com/v1/backend-api-booapp-aws/colevento';
+  private apiUrl =
+    'https://booapp-api.onrender.com/v1/backend-api-booapp-aws/colevento';
 
-  constructor(private http: HttpClient, private platform: Platform) { }
+  constructor(private http: HttpClient, private platform: Platform) {}
 
-  obtenerEventos(): Observable<{ success: boolean; message: string; data: { colEventosleps: Evento[] } }> {
-    return this.http.get<{ success: boolean; message: string; data: { colEventosleps: Evento[] } }>(this.apiUrl);
+  obtenerEventos(): Observable<{
+    success: boolean;
+    message: string;
+    data: { colEventosleps: Evento[] };
+  }> {
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      data: { colEventosleps: Evento[] };
+    }>(this.apiUrl);
   }
 
   esDispositivoMovil(): boolean {
-    return this.platform.is('mobile') || this.platform.is('mobileweb') || this.platform.is('capacitor');
+    return (
+      this.platform.is('mobile') ||
+      this.platform.is('mobileweb') ||
+      this.platform.is('capacitor')
+    );
   }
 
   obtenerEventoMasReciente(eventos: Evento[]): Evento | null {

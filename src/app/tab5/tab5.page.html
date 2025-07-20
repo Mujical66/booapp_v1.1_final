@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Perfil del Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,7 +11,8 @@
       <ion-avatar class="avatar">
         <img
           [src]="usuarioActual.fotoPerfil ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil : 'assets/logoFantasma.png'"
-          [alt]="usuarioActual.fotoPerfil" />
+          [alt]="usuarioActual.fotoPerfil"
+        />
       </ion-avatar>
     </ion-card-header>
 
@@ -33,12 +34,18 @@
         </ion-item>
 
         <div class="ion-margin-top">
-          <ion-button expand="block" (click)="iniciarEdicion()">Editar</ion-button>
+          <ion-button expand="block" (click)="iniciarEdicion()"
+            >Editar</ion-button
+          >
         </div>
       </ion-list>
 
       <!-- Modo Edición -->
-      <form *ngIf="editando" [formGroup]="formPerfil" (ngSubmit)="guardarCambios()">
+      <form
+        *ngIf="editando"
+        [formGroup]="formPerfil"
+        (ngSubmit)="guardarCambios()"
+      >
         <ion-item>
           <ion-label position="stacked">DNI</ion-label>
           <ion-input formControlName="IdDni" required></ion-input>
@@ -51,7 +58,11 @@
 
         <ion-item>
           <ion-label position="stacked">NUEVA CONTRASEÑA</ion-label>
-          <ion-input type="password" formControlName="password" placeholder="Dejar vacío para no cambiar"></ion-input>
+          <ion-input
+            type="password"
+            formControlName="password"
+            placeholder="Dejar vacío para no cambiar"
+          ></ion-input>
         </ion-item>
 
         <ion-item>
@@ -60,8 +71,15 @@
         </ion-item>
 
         <div class="ion-margin-top">
-          <ion-button type="submit" expand="block" [disabled]="formPerfil.invalid">Guardar</ion-button>
-          <ion-button expand="block" color="medium" (click)="cancelarEdicion()">Cancelar</ion-button>
+          <ion-button
+            type="submit"
+            expand="block"
+            [disabled]="formPerfil.invalid"
+            >Guardar</ion-button
+          >
+          <ion-button expand="block" color="medium" (click)="cancelarEdicion()"
+            >Cancelar</ion-button
+          >
         </div>
       </form>
     </ion-card-content>

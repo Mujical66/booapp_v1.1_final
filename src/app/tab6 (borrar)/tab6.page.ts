@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList,
-  IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSpinner, IonButtons, IonIcon
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonList,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonSpinner,
+  IonButtons,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -19,9 +30,21 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['tab6.page.scss'],
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonCard,
-    IonCardHeader, IonCardTitle, IonCardContent, IonSpinner,
-    NgIf, NgFor, IonButtons, IonIcon
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonList,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSpinner,
+    NgIf,
+    NgFor,
+    IonButtons,
+    IonIcon,
   ],
 })
 export class Tab6Page implements OnInit {
@@ -35,7 +58,8 @@ export class Tab6Page implements OnInit {
     private router: Router,
     private navCtrl: NavController,
     private authService: AuthService,
-  ) { 
+    private alertController: AlertController
+  ) {
     addIcons({ exit });
   }
 
@@ -54,9 +78,35 @@ export class Tab6Page implements OnInit {
     this.apiService.cargarEventos();
   }
 
-  salir() {
-    this.authService.cerrarSesion();
-    this.router.navigate(['/home']);
+  async salir() {
+    // Verificar si hay un usuario logueado (admin o turista)
+    const usuario = this.authService.getUsuarioActual();
+
+    const alertConfig = {
+      cssClass: 'custom-alert',
+      header: usuario ? 'Cerrar sesión' : 'Salir de la app',
+      message: usuario ? '¿Desea cerrar su sesión?' : '¿Desea salir al inicio?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancel-button',
+        },
+        {
+          text: 'Sí',
+          cssClass: 'exit-button',
+          handler: () => {
+            if (usuario) {
+              this.authService.cerrarSesion(); // Cierra sesión solo si está logueado
+            }
+            this.router.navigate(['/home']); // Redirige al inicio en ambos casos
+          },
+        },
+      ],
+    };
+
+    const alert = await this.alertController.create(alertConfig);
+    await alert.present();
   }
 
   ionViewWillEnter() {
@@ -96,7 +146,7 @@ export class Tab6Page implements OnInit {
     const alert = await this.alertCtrl.create({
       header: 'Confirmar',
       message: '¿Está seguro de eliminar este registro?',
-      cssClass: 'custom-alert',  
+      cssClass: 'custom-alert',
       buttons: [
         {
           text: 'No',

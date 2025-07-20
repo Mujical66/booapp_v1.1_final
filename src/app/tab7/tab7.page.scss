@@ -1,4 +1,4 @@
-ion-toolbar {  
+ion-toolbar {
   .notificacion-banner {
     background-color: #f0f0f0;
     margin: 15px;
@@ -7,7 +7,6 @@ ion-toolbar {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in-out;
-
   }
 
   --background: var(--color-menu);
@@ -18,7 +17,7 @@ ion-title.title-large {
   margin-top: 30px;
   margin-bottom: 10px;
   color: #fff;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
 }
@@ -26,12 +25,12 @@ ion-title.title-large {
 ion-title {
   margin-bottom: 10px;
   color: #fff;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
 }
 
-/* Contenedor principal del scroll */ 
+/* Contenedor principal del scroll */
 .scroll-wrapper {
   margin-top: 20px;
   width: 100%;
@@ -41,13 +40,13 @@ ion-title {
   border-radius: 8px;
   background: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  
+
   /* Estilo visual para la barra de scroll */
   &::-webkit-scrollbar {
     height: 8px;
     background-color: #f5f5f5;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background-color: var(--ion-color-medium);
     border-radius: 4px;
@@ -60,58 +59,24 @@ ion-title {
   width: 100%;
 }
 
-/* Estilos para las columnas */
-.col-nombre {
-  min-width: 200px;
-  max-width: 200px;
-  padding: 10px 15px;
-}
-
-.col-email {
-  min-width: 250px;
-  max-width: 250px;
-  padding: 10px 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.col-rol {
-  min-width: 100px;
-  max-width: 100px;
-  padding: 10px 15px;
-  text-align: center;
-}
-
-.col-accion {
-  min-width: 150px;
-  max-width: 150px;
-  padding: 10px 15px;
-  text-align: center;
-}
-
 /* Estilos para filas */
 .header-row {
   background-color: var(--color-menu);
   color: white;
   font-weight: bold;
   padding: 12px 0;
+  font-size: 13px;
 }
 
 .user-row {
-  padding: 10px 0;
+  padding: 5px 0;
   border-bottom: 1px solid var(--ion-color-light);
   align-items: center;
+  margin: 0;
 }
 
-.user-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  --border-width: 0;
-  
-  &:last-child .user-row {
-    border-bottom: none;
-  }
+.user-row ion-col {
+  font-size: 12px;
 }
 
 /* Estilos para el botón */
@@ -128,4 +93,3 @@ ion-button {
   padding: 20px;
   color: var(--ion-color-medium);
 }
-

@@ -1,14 +1,22 @@
-<ion-header class="ion-no-border"> 
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Compartir</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding ion-text-center" style="--background: var(--bg-color);color: var(--text-color)">
-  <ion-button class="whatsapp-button" (click)="compartirWhatsApp()" fill="clear">
+<ion-content
+  [fullscreen]="true"
+  class="ion-padding ion-text-center"
+  style="--background: var(--bg-color); color: var(--text-color)"
+>
+  <ion-button
+    class="whatsapp-button"
+    (click)="compartirWhatsApp()"
+    fill="clear"
+  >
     <img src="../../assets/whatsapp.png" alt="WhatsApp" class="whatsapp-icon" />
   </ion-button>
-  <ion-title class="msg-comparte">Conoce la BooApp</ion-title>
-  <ion-title class="msg-comparte">Te la recomiendo</ion-title>
+  <ion-title class="msg-comparte">Comparte está experiencia</ion-title>
+  <ion-title class="msg-comparte">misteriosa con tus amigos</ion-title>
 </ion-content>

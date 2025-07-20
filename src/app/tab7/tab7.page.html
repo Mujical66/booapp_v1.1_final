@@ -1,6 +1,6 @@
-<ion-header class="ion-no-border"> 
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">Bienvenido a Boo</ion-title>
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Administrar Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,25 +9,33 @@
   <ion-list *ngIf="usuarios.length > 0">
     <ion-grid>
       <ion-row class="header-row">
-        <ion-col size="4"><strong>Nombre</strong></ion-col>
+        <ion-col size="3"><strong>Nombre</strong></ion-col>
         <ion-col size="4"><strong>Email</strong></ion-col>
         <ion-col size="2"><strong>Rol</strong></ion-col>
-        <ion-col size="2"><strong>Acción</strong></ion-col>
+        <ion-col size="3"><strong>Acción</strong></ion-col>
       </ion-row>
 
       <ion-item *ngFor="let usuario of usuarios">
-        <ion-grid class="centered-grid">
+        <ion-grid>
           <ion-row class="user-row">
             <ion-col size="3">{{ usuario.nombre }}</ion-col>
             <ion-col size="4">{{ usuario.email }}</ion-col>
-            <ion-col size="3">{{ usuario.rol }}</ion-col>
-            <ion-col size="2">
-              <ion-button *ngIf="usuario._id !== usuarioActual?._id" size="small" (click)="cambiarRol(usuario)"
-                [color]="usuario.rol === 'admin' ? 'warning' : 'primary'">
+            <ion-col size="2">{{ usuario.rol }}</ion-col>
+            <ion-col size="3">
+              <ion-button
+                *ngIf="usuario._id !== usuarioActual?._id"
+                size="small"
+                (click)="cambiarRol(usuario)"
+                [color]="usuario.rol === 'admin' ? 'warning' : 'primary'"
+              >
                 {{ usuario.rol === 'admin' ? 'Hacer Turista' : 'Hacer Admin' }}
               </ion-button>
-              <ion-button *ngIf="usuario._id === usuarioActual?._id" size="small" color="danger" 
-                (click)="confirmarEliminarCuenta()">
+              <ion-button
+                *ngIf="usuario._id === usuarioActual?._id"
+                size="small"
+                color="danger"
+                (click)="confirmarEliminarCuenta()"
+              >
                 Borrar Cuenta
               </ion-button>
             </ion-col>

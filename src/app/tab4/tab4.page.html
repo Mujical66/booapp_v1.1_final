@@ -1,40 +1,93 @@
-<ion-header class="ion-no-border"> 
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">Bienvenido a Boo</ion-title>
-    <ion-title>Gestión de Eventos</ion-title> 
+    <ion-buttons slot="end">
+      <ion-button (click)="salir()" fill="clear" class="exit-button">
+        <ion-icon slot="icon-only" name="exit"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
+    <ion-title>Gestión de Eventos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-header collapse="condense">
     <ion-toolbar class="toolbar-azul-oscuro">
       <ion-title size="large">Eventos Paranormales</ion-title>
     </ion-toolbar>
   </ion-header>
- 
+
   <div class="contenedor-botones">
     <ion-button class="boton" (click)="agregar()">Agregar Evento</ion-button>
   </div>
 
   <ion-list *ngIf="!cargando && data && data.length > 0">
-    <ion-card *ngFor="let item of data"> 
-      <img *ngIf="item.imagen" [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
-        alt="Imagen del evento" class="card-img" />
+    <ion-card *ngFor="let item of data">
+      <img
+        *ngIf="item.imagen"
+        [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + item.imagen"
+        alt="Imagen del evento"
+        class="card-img"
+      />
 
       <ion-card-header>
-        <ion-card-title class="small-title">Título: {{ item.titulo }}</ion-card-title>
-
+        <ion-card-title class="small-title"
+          >Título: {{ item.titulo }}</ion-card-title
+        >
+        <ion-badge
+          [color]="
+            item.estado === 'Activo' ? 'success' :
+            item.estado === 'Inactivo' ? 'warning' :
+            'danger'
+          "
+          class="estado-badge"
+        >
+          {{ item.estado === 'Activo' ? 'APROBADO' : item.estado === 'Inactivo'
+          ? 'PENDIENTE REVISIÓN' : 'RECHAZADO' }}
+        </ion-badge>
       </ion-card-header>
+
       <ion-card-content class="descripcion-card">
         <strong>Descripción:</strong> {{ item.descripcion }}
+
+        <div class="icon-actions-revisar">
+          <ion-button
+            *ngIf="esAdmin && item.estado === 'Inactivo'"
+            class="boton-revisa"
+            size="small"
+            (click)="aprobarEvento(item)"
+          >
+            Aprobar
+          </ion-button>
+          <ion-button
+            *ngIf="esAdmin && item.estado === 'Inactivo'"
+            class="boton-revisa"
+            size="small"
+            (click)="rechazarEvento(item)"
+          >
+            Rechazar
+          </ion-button>
+        </div>
+
         <div class="icon-actions">
-          <!-- Después -->
-          <ion-button class="boton" size="small" (click)="editarEvento(item)">Editar</ion-button>
-         
+          <ion-button
+            *ngIf="item.estado === 'Inactivo' || item.estado !== 'Cancelado' && esAdmin"
+            class="boton"
+            size="small"
+            (click)="editarEvento(item)"
+            >Editar</ion-button
+          >
+          <ion-button
+            *ngIf="esAdmin"
+            class="boton"
+            size="small"
+            (click)="eliminarEvento(item)"
+          >
+            Eliminar
+          </ion-button>
         </div>
       </ion-card-content>
-      
     </ion-card>
   </ion-list>
   <div *ngIf="!cargando && data && data.length === 0">
@@ -44,5 +97,4 @@
     <ion-spinner name="bubbles"></ion-spinner>
     <div class="spinner-title">Cargando datos desde la API...</div>
   </div>
-
 </ion-content>
