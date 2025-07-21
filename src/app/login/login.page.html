@@ -13,7 +13,9 @@
     <ion-card-content>
       <!-- Email -->
       <ion-item>
-        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-label position="floating" class="title-card"
+          >Correo Electrónico</ion-label
+        >
         <ion-input
           [(ngModel)]="credenciales.email"
           type="email"
@@ -38,7 +40,7 @@
 
       <!-- Contraseña -->
       <ion-item>
-        <ion-label position="floating">Contraseña</ion-label>
+        <ion-label position="floating" class="title-card">Contraseña</ion-label>
         <ion-input
           [(ngModel)]="credenciales.password"
           type="password"
@@ -63,7 +65,12 @@
       </div>
 
       <!-- Botón de Login -->
-      <ion-button expand="block" (click)="login()" [disabled]="loading">
+      <ion-button
+        expand="block"
+        (click)="login()"
+        [disabled]="loading"
+        class="boton"
+      >
         {{ loading ? 'Ingresando...' : 'Iniciar Sesión' }}
       </ion-button>
 

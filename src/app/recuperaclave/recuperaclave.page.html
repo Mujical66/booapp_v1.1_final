@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <img src="assets/banner-login.jpg" alt="Logo App" class="banner-image">
+    <img src="assets/banner-login.jpg" alt="Logo App" class="banner-image" />
   </ion-toolbar>
 </ion-header>
 
@@ -13,13 +13,23 @@
     <ion-card-content>
       <!-- Email -->
       <ion-item>
-        <ion-label position="floating">Correo Electrónico</ion-label>
-        <ion-input [(ngModel)]="credenciales.email" type="email" name="email" required
-          #emailInput="ngModel"></ion-input>
+        <ion-label position="floating" class="title-correo"
+          >Correo Electrónico</ion-label
+        >
+        <ion-input
+          [(ngModel)]="credenciales.email"
+          type="email"
+          name="email"
+          required
+          #emailInput="ngModel"
+        ></ion-input>
       </ion-item>
 
       <!-- Mensaje de error para email -->
-      <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="error-message">
+      <div
+        *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)"
+        class="error-message"
+      >
         <ion-text color="danger" *ngIf="emailInput.errors?.['required']">
           El correo electrónico es requerido
         </ion-text>
@@ -29,14 +39,18 @@
       </div>
 
       <!-- Botón de Login -->
-      <ion-button expand="block" (click)="enviarcorreo()" [disabled]="loading">
+      <ion-button
+        expand="block"
+        (click)="enviarcorreo()"
+        [disabled]="loading"
+        class="boton"
+      >
         {{ loading ? 'Enviando...' : 'Enviar Correo' }}
       </ion-button>
 
       <ion-button class="btn-cerrar" expand="block" (click)="retornar()">
         Retornar
       </ion-button>
-      
     </ion-card-content>
   </ion-card>
 
@@ -46,6 +60,12 @@
   </div>
 
   <!-- Toast -->
-  <ion-toast [isOpen]="showToast" (didDismiss)="showToast = false" [message]="toastMessage" duration="3000"
-    color="danger" position="top"></ion-toast>
+  <ion-toast
+    [isOpen]="showToast"
+    (didDismiss)="showToast = false"
+    [message]="toastMessage"
+    duration="3000"
+    color="danger"
+    position="top"
+  ></ion-toast>
 </ion-content>

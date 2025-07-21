@@ -1,89 +1,91 @@
 .banner-image {
-  margin-top: 30px;
-  width: 400px;
-  height: 220px;
+  margin-top: 2rem;
+  width: 26rem;
+  height: 15rem;
 }
 
 ion-title.title-large {
-  margin-top: 40px;
-  margin-bottom: 10px;
-  font-size: 30px;
+  margin-top: 2.5rem;
+  margin-bottom: 0.62rem;
+  font-size: 1.87rem;
   font-weight: bold;
   text-align: center;
 }
 
 ion-title {
-  margin-bottom: 30px;
-  font-size: 26px;
+  margin-bottom: 1.87rem;
+  font-size: 1.62rem;
   font-weight: bold;
   text-align: center;
 }
 
 .imagen {
-  margin-top: 22px;
-  width: 150px;
+  margin-top: 1.37rem;
+  width: 9.37rem;
   height: auto;
 }
 
 .boton {
-  margin-bottom: 15px;
-  width: 190px;
-  height: 50px;
-  border-radius: 10px;
+  margin-bottom: 0.93rem;
+  width: 11.87rem;
+  height: 3.3rem;
+  border-radius: 0.62rem;
 }
 
 ion-button {
   --background: var(--color-buttons);
-  --border-radius: 10px;
+  --border-radius: 0.62rem;
 }
 
 .btn-cerrar {
-  margin-top: 80px;
+  margin-top: 5rem;
   --background: var(--color-menu);
-  --color: #ffffff; 
-  width: 180px;
+  --color: #ffffff;
+  width: 11.25rem;
+  height: 3rem;
 }
 
 .footerText {
   color: var(--color-info);
-  font-size: 14px;
+  font-size: 0.87rem;
   text-align: center;
+  margin: 0.3rem 0;
 }
 
 /* Añade esto al final de tu archivo SCSS */
 ion-alert {
   --backdrop-opacity: 0.7;
   --background-color: #ffffff;
-  
+
   .alert-wrapper {
     border-radius: 15px;
   }
-  
+
   .alert-head {
     background: #ffffff;
     color: #000000;
     padding: 15px;
-    
+
     .alert-title {
       font-size: 1.2rem;
       font-weight: bold;
     }
   }
-  
+
   .alert-message {
     padding: 15px;
     color: var(--ion-text-color);
   }
-  
+
   .alert-button-group {
     padding: 0;
-    
+
     button {
       margin: 0;
       flex: 1;
       border-radius: 0;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
-      
+
       &:last-child {
         border-right: none;
         color: var(--ion-color-danger);

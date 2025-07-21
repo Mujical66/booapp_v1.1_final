@@ -1,0 +1,40 @@
+.banner-image {
+  margin-top: 2rem;
+  width: 26rem;
+  height: 15rem;
+}
+
+ion-title {
+  margin-bottom: 1.87rem;
+  font-size: 1.62rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.boton {
+  margin-bottom: 0.93rem;
+  width: 11.87rem;
+  height: 3.3rem;
+  border-radius: 0.62rem;
+}
+
+ion-button {
+  --background: var(--color-buttons);
+  --border-radius: 0.62rem;
+}
+
+.btn-cerrar {
+  margin-top: 5rem;
+  --background: var(--color-menu);
+  --color: #ffffff;
+  width: 11.25rem;
+  height: 3rem;
+}
+
+.btn-cerrar {
+  margin: 1.5rem auto;
+  --background: var(--color-menu);
+  --color: #ffffff;
+  width: 11.25rem;
+  height: 3rem;
+}

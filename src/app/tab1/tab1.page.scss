@@ -2,12 +2,13 @@ ion-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 2rem;
 
   .notificacion-banner {
     background-color: #f0f0f0;
-    margin: 15px;
-    padding: 10px;
-    border-radius: 8px;
+    margin: 0.93rem;
+    padding: 0.62rem;
+    border-radius: 0.5rem;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in-out;
@@ -15,46 +16,37 @@ ion-toolbar {
 
   --background: var(--color-menu);
   --color: #ffffff;
-}
-
-ion-title.title-large {
-  margin-top: 30px;
-  margin-bottom: 10px;
-  color: "#ffffff";
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
+  height: 5rem;
 }
 
 ion-title {
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 18px;
+  margin: 1.87rem auto;
+  font-size: 1.4rem;
   font-weight: bold;
   text-align: center;
 }
 
 ion-card-title {
   text-align: center;
-  font-size: 19px;
+  font-size: 1.19rem;
   font-weight: bold;
 }
 
 ion-card-subtitle {
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 ion-searchbar {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0.62rem;
+  margin-bottom: 0.62rem;
 }
 
 .no-results {
   text-align: center;
   color: #888;
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 1.25rem;
+  font-size: 1rem;
 }
 
 .centered-alert {
@@ -73,7 +65,7 @@ ion-searchbar {
 
 ion-card img {
   width: 100%;
-  height: 240px; /* Altura fija que prefieras */
+  height: 15rem; /* Altura fija que prefieras */
   object-fit: cover;
   display: block;
 }
@@ -82,13 +74,13 @@ ion-card img {
   --background: white; /* Fondo blanco */
   --color: var(--color-menu); /* Color azul del tema */
   --border-radius: 50%; /* Forma redonda */
-  --padding: 8px; /* Espaciado interno */
-  width: 40px; /* Tamaño fijo */
-  height: 40px; /* Tamaño fijo */
-  margin-right: 8px; /* Espaciado derecho */
+  --padding: 1rem; /* Espaciado interno */
+  width: 2.5rem; /* Tamaño fijo */
+  height: 2.5rem; /* Tamaño fijo */
+  margin-right: 1rem; /* Espaciado derecho */
 
   ion-icon {
-    font-size: 24px; /* Tamaño del icono */
+    font-size: 1.5rem; /* Tamaño del icono */
   }
 
   /* Efecto al presionar */

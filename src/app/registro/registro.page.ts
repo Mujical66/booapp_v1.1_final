@@ -17,7 +17,7 @@ import {
   IonItem,
   IonLabel,
   IonButton,
-  IonToast
+  IonToast,
 } from '@ionic/angular/standalone';
 
 import { CommonModule } from '@angular/common';
@@ -42,8 +42,8 @@ import { FormsModule } from '@angular/forms';
     IonItem,
     IonLabel,
     IonButton,
-    IonToast
-  ]
+    IonToast,
+  ],
 })
 export class RegistroPage implements OnInit {
   nuevoUsuario = {
@@ -52,10 +52,10 @@ export class RegistroPage implements OnInit {
     email: '',
     password: '',
     rol: 'Turista',
-    fotoPerfil: '',
+    fotoPerfil: 'assets/vacia.jpg',
     activo: 1,
     fechaIngreso: new Date().toISOString(),
-    ultimaActividad: new Date().toISOString()
+    ultimaActividad: new Date().toISOString(),
   };
 
   usuariosExistentes: any[] = [];
@@ -67,10 +67,12 @@ export class RegistroPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private platform: Platform
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.cargarUsuarios();
+    // Si no se tomó foto, fotoPerfil ya tendrá la base64
+    this.nuevoUsuario.fotoPerfil = await this.loadDefaultPhoto();
   }
 
   ionViewDidEnter() {
@@ -81,7 +83,8 @@ export class RegistroPage implements OnInit {
 
   ionViewWillLeave() {
     this.platform.ready().then(() => {
-      (window as any).plugins && (window as any).plugins.insomnia.allowSleepAgain();
+      (window as any).plugins &&
+        (window as any).plugins.insomnia.allowSleepAgain();
     });
   }
 
@@ -89,7 +92,7 @@ export class RegistroPage implements OnInit {
     this.loading = true;
     this.authService.cargarUsuarios().subscribe({
       next: (response) => {
-        this.authService.cargarUsuarios().subscribe(usuarios => {
+        this.authService.cargarUsuarios().subscribe((usuarios) => {
           this.usuariosExistentes = usuarios;
         });
         this.loading = false;
@@ -97,7 +100,7 @@ export class RegistroPage implements OnInit {
       error: (err) => {
         console.error('Error al cargar usuarios:', err);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -126,14 +129,14 @@ export class RegistroPage implements OnInit {
         console.error('Error al crear usuario:', err);
         this.toastMessage = 'Hubo un problema al registrar el usuario.';
         this.showToast = true;
-      }
+      },
     });
   }
 
   async tomarFoto() {
     try {
       const image = await Camera.getPhoto({
-        quality: 60,
+        quality: 50,
         allowEditing: false,
         resultType: CameraResultType.DataUrl,
         source: CameraSource.Camera,
@@ -141,8 +144,8 @@ export class RegistroPage implements OnInit {
         height: 700,
       });
 
-      if (image && image.dataUrl) {
-        this.nuevoUsuario.fotoPerfil = image.dataUrl;
+      if (image?.dataUrl) {
+        this.nuevoUsuario.fotoPerfil = image.dataUrl; // se reemplaza sólo si existe
       }
     } catch (error) {
       console.error('Error al tomar la foto:', error);
@@ -158,5 +161,17 @@ export class RegistroPage implements OnInit {
 
   async retornar() {
     this.router.navigate(['/home']);
+  }
+
+  private async loadDefaultPhoto(): Promise<string> {
+    // Usamos fetch para leer el archivo y convertirlo a base64
+    const res = await fetch('assets/vacia.jpg');
+    const blob = await res.blob();
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   }
 }
