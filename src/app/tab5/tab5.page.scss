@@ -1,45 +1,37 @@
 ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+
   --background: var(--color-menu);
   --color: #ffffff;
-}
-
-ion-title.title-large {
-  margin-top: 30px;
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
+  height: 5rem;
 }
 
 ion-title {
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 18px;
+  margin: 1.87rem auto;
+  font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
 }
 
 .avatar {
   margin: 0 auto;
-  width: 220px;
-  height: 220px;
+  width: 14.75rem;
+  height: 14.75rem;
 }
 
 ion-card {
-  max-width: 600px;
-  margin: 20px auto;
-  border-radius: 12px;
+  max-width: 37.5rem;
+  margin: 1.25rem auto;
+  border-radius: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 ion-button {
-  margin-top: 10px;
-  --border-radius: 10px;
-
-  &[color="danger"] {
-    --background: var(--ion-color-danger);
-  }
+  margin-top: 0.625rem;
+  --border-radius: 0.625rem;
 }
 
 ion-input[readonly] {
@@ -48,19 +40,23 @@ ion-input[readonly] {
 
 form {
   ion-item {
-    margin-bottom: 15px;
+    margin-bottom: 0.94rem;
   }
-}
-
-.boton {
-  margin-top: 25px;
-  margin-bottom: 15px;
-  width: 190px;
-  height: 50px;
-  border-radius: 10px;
 }
 
 ion-button {
   --background: var(--color-buttons);
-  --border-radius: 10px;
+  --border-radius: 0.62rem;
 }
+
+/* En tu tab5.page.scss */
+// .cambiar-foto-btn {
+//   margin-top: 10px;
+//   --border-radius: 20px;
+//   --background: var(--ion-color-light);
+//   --color: var(--ion-color-dark);
+
+//   ion-icon {
+//     margin-right: 8px;
+//   }
+// }

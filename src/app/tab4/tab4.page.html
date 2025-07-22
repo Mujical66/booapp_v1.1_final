@@ -6,7 +6,6 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Gestión de Eventos</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,7 +18,9 @@
   </ion-header>
 
   <div class="contenedor-botones">
-    <ion-button class="boton" (click)="agregar()">Agregar Evento</ion-button>
+    <ion-button class="boton" (click)="agregar()" class="boton"
+      >Agregar Evento</ion-button
+    >
   </div>
 
   <ion-list *ngIf="!cargando && data && data.length > 0">

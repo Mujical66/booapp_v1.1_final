@@ -14,7 +14,9 @@
       <!-- Imagen -->
       <img
         [src]="evento.imagen ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.imagen : 'assets/noimagen.png'"
-        [alt]="evento.titulo" (error)="onImageError($event)" />
+        [alt]="evento.titulo"
+        (error)="onImageError($event)"
+      />
 
       <ion-card-content>
         <!-- Descripción -->
@@ -36,11 +38,15 @@
         <!-- Usuario -->
         <h3><strong>Creador: </strong>{{ nombreUsuario }}</h3>
 
+        <br />
+
         <!-- Video -->
         <div class="video-container" *ngIf="evento.video">
           <video controls width="100%">
-            <source [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.video"
-              type="video/mp4">
+            <source
+              [src]="'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + evento.video"
+              type="video/mp4"
+            />
           </video>
         </div>
 
@@ -48,6 +54,8 @@
         <div *ngIf="evento.popularidad">
           <strong>Popularidad:</strong> ⭐ {{ evento.popularidad }}
         </div>
+
+        <br />
 
         <!-- Estado -->
         <div *ngIf="evento.estado">

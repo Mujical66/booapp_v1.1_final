@@ -1,6 +1,5 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Perfil del Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,8 +9,9 @@
     <ion-card-header>
       <ion-avatar class="avatar">
         <img
-          [src]="usuarioActual.fotoPerfil ? 'https://s3-uploadimages-booapp-bucket.s3.us-east-2.amazonaws.com/' + usuarioActual.fotoPerfil : 'assets/logoFantasma.png'"
-          [alt]="usuarioActual.fotoPerfil"
+          [src]="getFotoUrl(usuarioActual?.fotoPerfil)"
+          [alt]="usuarioActual?.nombre"
+          (error)="onImageError($event)"
         />
       </ion-avatar>
     </ion-card-header>
@@ -24,12 +24,12 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">NOMBRE</ion-label>
+          <ion-label position="stacked">Nombre</ion-label>
           <ion-input [value]="usuarioActual.nombre" readonly></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">EMAIL</ion-label>
+          <ion-label position="stacked">email</ion-label>
           <ion-input [value]="usuarioActual.email" readonly></ion-input>
         </ion-item>
 
@@ -47,17 +47,17 @@
         (ngSubmit)="guardarCambios()"
       >
         <ion-item>
-          <ion-label position="stacked">DNI</ion-label>
+          <ion-label position="stacked">Cédula</ion-label>
           <ion-input formControlName="IdDni" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">NOMBRE</ion-label>
+          <ion-label position="stacked">Nombre</ion-label>
           <ion-input formControlName="nombre" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">NUEVA CONTRASEÑA</ion-label>
+          <ion-label position="stacked">Nueva Contraseña</ion-label>
           <ion-input
             type="password"
             formControlName="password"
@@ -66,9 +66,14 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">EMAIL</ion-label>
+          <ion-label position="stacked">email</ion-label>
           <ion-input [value]="usuarioActual.email" readonly></ion-input>
         </ion-item>
+
+        <ion-button *ngIf="editando" expand="block" (click)="cambiarFoto()">
+          <ion-icon name="camera" slot="start"></ion-icon>
+          Cambiar foto
+        </ion-button>
 
         <div class="ion-margin-top">
           <ion-button

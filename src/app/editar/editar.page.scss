@@ -1,46 +1,49 @@
 ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+
   --background: var(--color-menu);
   --color: #ffffff;
-  margin-top: 20px;
+  height: 5rem;
 }
 
 ion-title {
-  font-family: sans-serif, "SansSerifFLF";
-  margin-bottom: 10px;
-  color: #fff;
-  font-size: 18px;
+  margin: 1.87rem auto;
+  font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
 }
 
 .boton {
-  margin-top: 25px;
-  margin-bottom: 15px;
-  width: 190px;
-  height: 50px;
-  border-radius: 10px;
+  margin-top: 1.56rem;
+  margin-bottom: 0.93rem;
+  width: 11.87rem;
+  height: 3.12rem;
+  border-radius: 0.62rem;
 }
 
 ion-button {
   --background: var(--color-buttons);
-  --border-radius: 10px;
+  --border-radius: 0.62rem;
 }
 
 ion-card-title {
   text-align: center;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
 }
 
 h3 {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .contenedor-boton {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 0.62rem;
 }
 
 ion-card img {
@@ -51,8 +54,8 @@ ion-card img {
 }
 
 .etiqueta-campos-editables {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0.62rem;
+  margin-bottom: 0.62rem;
   text-align: center;
 }
 
@@ -60,9 +63,9 @@ ion-card img {
 .estatus-aprobado {
   color: #2dd36f; /* Verde de Ionic para éxito */
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 0.31rem 0.62rem;
   background-color: rgba(45, 211, 111, 0.1);
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
 .estatus-pendiente {
@@ -76,9 +79,9 @@ ion-card img {
 .estatus-rechazado {
   color: #eb445a; /* Rojo de Ionic para error */
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 0.31rem 0.62rem;
   background-color: rgba(235, 68, 90, 0.1);
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
 /* Estilos específicos para botones de ayuda */
@@ -90,14 +93,14 @@ ion-card img {
   --padding-end: 0;
   --padding-top: 0;
   --padding-bottom: 0;
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
-  min-height: 22px;
-  margin: 0 8px 0 0;
+  width: 1.37rem;
+  height: 1.37rem;
+  min-width: 1.37rem;
+  min-height: 1.37rem;
+  margin: 0 0.5rem 0 0;
 
   ion-icon {
-    font-size: 18px;
+    font-size: 1.12rem;
     width: 100%;
     height: 100%;
   }
@@ -105,7 +108,7 @@ ion-card img {
   /* En headers de lista */
   ion-list-header & {
     position: absolute;
-    right: 16px;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -114,33 +117,32 @@ ion-card img {
 .labels-container {
   display: flex;
   align-items: center; /* Alinea verticalmente */
-  gap: 8px; /* Espacio entre labels */
+  gap: 0.5rem; /* Espacio entre labels */
   width: 100%; /* Ocupa todo el ancho disponible */
 }
 
 /* Botones de multimedia */
 .multimedia {
   --color: #ffffff;
-  font-size: 12px;
-  margin-right: 8px;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
   font-family: "Courier New", Courier, monospace;
 
   ion-icon {
-    margin-right: 6px;
+    margin-right: 0.37rem;
   }
 }
 
 .borrar {
   --background: #e91414;
   --color: #ffffff;
-  --border-radius: 10px;
-  margin-right: 5px;
+  --border-radius: 0.62rem;
+  margin-right: 0.31rem;
   font-weight: bold;
-  font-size: 13px;
-  // --font-size: 25px;
+  font-size: 0.81rem;
 }
 
 .multimedia {
   --color: #ffffff;
-  font-size: 13px;
+  font-size: 0.81rem;
 }

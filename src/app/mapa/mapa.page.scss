@@ -4,12 +4,8 @@ DESCRIPCIÓN: Estilos personalizados para la página de geolocalizacion.
 DESARROLLADOR: Luis Mujica
 FECHA: 2025-06-09
 PROYECTO: BooApp
-VERSION: 1.0.0  
+VERSION: 1.0.0   
 */
-
-body {
-  background: #edf2fa !important;
-}
 
 :host {
   ion-content {
@@ -18,17 +14,22 @@ body {
   }
 }
 
-.toolbar-azul-oscuro {
-  --background: rgb(7, 26, 76); /* Color azul oscuro especificado */
-  --color: white; /* Texto blanco */
-  padding-left: 16px; /* Alineación izquierda */
-  padding-top: 10px;
-  padding-bottom: 10px;
+ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
 
-  ion-title {
-    color: #f4f4f7 !important;
-    font-size: 16px;
-  }
+  --background: var(--color-menu);
+  --color: #ffffff;
+  height: 5rem;
+}
+
+ion-title {
+  margin: 1.87rem auto;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
 }
 
 #map {
@@ -42,11 +43,11 @@ body {
 
 /* Estilos de transparencia del container card */
 .card-transparente {
-  max-width: 320px;
+  max-width: 20rem;
   margin: 0 auto 16px auto;
   background: rgba(255, 255, 255, 0.7); /* Opacidad/transparencia */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
 .titulo-pequeno {
@@ -67,13 +68,13 @@ ion-content {
 }
 .card-superpuesto {
   position: absolute;
-  top: 24px;
+  top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  max-width: 320px;
+  max-width: 20rem;
   width: 90%;
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }

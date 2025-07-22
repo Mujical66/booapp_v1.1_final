@@ -1,6 +1,5 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title size="large">BooApp Mitos y Leyendas</ion-title>
     <ion-title>Administrar Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -30,14 +29,15 @@
               >
                 {{ usuario.rol === 'admin' ? 'Hacer Turista' : 'Hacer Admin' }}
               </ion-button>
-              <ion-button
+              <!-- <ion-button
+                [disabled]="true"
                 *ngIf="usuario._id === usuarioActual?._id"
                 size="small"
                 color="danger"
                 (click)="confirmarEliminarCuenta()"
               >
                 Borrar Cuenta
-              </ion-button>
+              </ion-button> -->
             </ion-col>
           </ion-row>
         </ion-grid>
