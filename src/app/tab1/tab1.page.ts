@@ -16,12 +16,13 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { RouterLink, Router } from '@angular/router';
 import { EventosService, Evento } from '../services/eventos.service';
 import { AuthService } from '../services/auth.service';
 import { addIcons } from 'ionicons';
-import { exit, help } from 'ionicons/icons';
+import { exit, help, chevronBackOutline } from 'ionicons/icons';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -47,6 +48,7 @@ import { AlertController } from '@ionic/angular';
     IonButton,
     IonIcon,
     IonButtons,
+    IonSpinner,
   ],
 })
 export class Tab1Page implements OnInit {
@@ -57,6 +59,7 @@ export class Tab1Page implements OnInit {
   mensajeNoResultados: string = '';
   eventoMasReciente: Evento | null = null;
   isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  cargando: boolean = true;
 
   alertButtons = [
     {
@@ -79,7 +82,7 @@ export class Tab1Page implements OnInit {
     private authService: AuthService,
     private alertController: AlertController
   ) {
-    addIcons({ exit, help });
+    addIcons({ exit, help, chevronBackOutline });
     window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
       this.isDarkMode = e.matches;
     });
@@ -119,6 +122,7 @@ export class Tab1Page implements OnInit {
   }
 
   cargarEventos(): void {
+    this.cargando = true; // Inicia la carga
     this.eventosService.obtenerEventos().subscribe({
       next: (response) => {
         if (response.success) {
@@ -138,6 +142,7 @@ export class Tab1Page implements OnInit {
           console.warn('API no devolvió éxito:', response.message);
           this.mensajeNoResultados = 'No se encontraron eventos activos.';
         }
+        this.cargando = false; // Finaliza la carga (éxito)
       },
       error: (err) => {
         console.error('Error al cargar eventos:', err);

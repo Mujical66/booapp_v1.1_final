@@ -1,7 +1,63 @@
+// Importa las fuentes personalizadas
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url("../../assets/fonts/OpenSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SansSerifFLF";
+  src: url("../../assets/fonts/SansSerifFLF.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SansSerifBldFLF";
+  src: url("../../assets/fonts/SansSerifBldFLF.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SUNDEL";
+  src: url("../../assets/fonts/SUNDEL.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.titulo1-home {
+  font-family: "SansSerifBldFLF", "OpenSans-Regular", "SansSerifFLF", Arial,
+    sans-serif !important;
+  text-align: center;
+  // font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-size: clamp(2rem, calc(0.7841rem + 0.4545vw), 2.5rem);
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  padding-top: 15px;
+  margin-top: 0.2em;
+}
+
+// Imagen del encabezado responsiva
 .banner-image {
-  margin-top: 2rem;
-  width: 26rem;
-  height: 15rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover; // Hace que la imagen cubra todo el área sin deformarse
+  display: block;
+  margin: 0;
+  padding: 0 0;
+}
+
+ion-toolbar {
+  --min-height: auto; // Ajusta la altura según lo que necesites
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .boton {
@@ -17,12 +73,13 @@ ion-button {
 }
 
 .title-card {
+  font-family: "SansSerifFLF", sans-serif;
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
 ion-card-title {
-  font-family: sans-serif, "SansSerifFLF";
+  font-family: "SansSerifFLF", sans-serif;
   font-size: 1.5rem;
   margin-top: 1.25rem;
   margin-bottom: 1.67rem;

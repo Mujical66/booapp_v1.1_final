@@ -1,6 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Compartir</ion-title>
+    <ion-buttons slot="start" style="margin-left: 20px">
+      <ion-button (click)="volverATab1()" class="exit-button">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="titulo1">Compartir</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,13 +14,27 @@
   class="ion-padding ion-text-center"
   style="--background: var(--bg-color); color: var(--text-color)"
 >
+  <ion-title class="titulo1-linea">¿Te gusta BooApp?</ion-title>
+  <ion-title class="titulo2-linea">¡Comparte esta</ion-title>
+  <ion-title class="titulo2-linea">experiencia</ion-title>
+  <ion-title class="titulo2-linea">misteriosa</ion-title>
+  <ion-title class="titulo2-linea">con tus amigos!</ion-title>
+
+  <img
+    src="../../assets/imgFlechaVerde.png"
+    alt="Flecha Indicador"
+    class="flecha-indicar"
+  />
+
   <ion-button
     class="whatsapp-button"
     (click)="compartirWhatsApp()"
     fill="clear"
   >
-    <img src="../../assets/whatsapp.png" alt="WhatsApp" class="whatsapp-icon" />
+    <img
+      src="../../assets/imgComparteWs.png"
+      alt="WhatsApp"
+      class="whatsapp-icon"
+    />
   </ion-button>
-  <ion-title class="msg-comparte">Comparte está experiencia</ion-title>
-  <ion-title class="msg-comparte">misteriosa con tus amigos</ion-title>
 </ion-content>

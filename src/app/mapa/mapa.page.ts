@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import * as mapboxgl from 'mapbox-gl';
 import { Geolocation, PermissionStatus } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
+import { addIcons } from 'ionicons';
+import { exit, help, chevronBackOutline, warningOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-mapa',
@@ -17,10 +19,19 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./mapa.page.scss'],
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar,
-    IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-    IonButtons, IonBackButton, IonAlert,
-    CommonModule, FormsModule,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonButtons,
+    IonBackButton,
+    IonAlert,
+    CommonModule,
+    FormsModule,
   ],
 })
 export class MapaPage implements OnInit {
@@ -33,17 +44,19 @@ export class MapaPage implements OnInit {
 
   // Límites geográficos de Venezuela
   private readonly VENEZUELA_BOUNDS = {
-    minLat: 0.6,    // Punto más al sur (Amazonas)
-    maxLat: 15.7,   // Punto más al norte (Isla de Aves)
-    minLng: -73.4,  // Punto más al oeste (Zulia)
-    maxLng: -59.8   // Punto más al este (Delta Amacuro)
+    minLat: 0.6, // Punto más al sur (Amazonas)
+    maxLat: 15.7, // Punto más al norte (Isla de Aves)
+    minLng: -73.4, // Punto más al oeste (Zulia)
+    maxLng: -59.8, // Punto más al este (Delta Amacuro)
   };
 
   // Puntos de ubicación
   puntoActual = { lat: 0, lng: 0 };
   puntoEvento = { lat: 0, lng: 0 };
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {
+    addIcons({ chevronBackOutline, warningOutline, exit, help });
+  }
 
   async ngOnInit() {
     await this.obtenerUbicacionActual();
@@ -54,7 +67,7 @@ export class MapaPage implements OnInit {
     try {
       // 1. Verificar permisos
       const estadoPermisos = await this.verificarPermisos();
-      
+
       if (estadoPermisos.location !== 'granted') {
         this.showPermissionAlert = true;
         throw new Error('Permisos no concedidos');
@@ -62,12 +75,17 @@ export class MapaPage implements OnInit {
 
       // 2. Obtener ubicación
       const position = await this.obtenerPosicionActual();
-      
+
       // 3. Validar coordenadas
-      if (this.estaEnVenezuela(position.coords.latitude, position.coords.longitude)) {
-        this.puntoActual = { 
-          lat: position.coords.latitude, 
-          lng: position.coords.longitude 
+      if (
+        this.estaEnVenezuela(
+          position.coords.latitude,
+          position.coords.longitude
+        )
+      ) {
+        this.puntoActual = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
         };
       } else {
         console.warn('Ubicación fuera de Venezuela, usando Caracas');
@@ -82,12 +100,12 @@ export class MapaPage implements OnInit {
   private async verificarPermisos(): Promise<PermissionStatus> {
     try {
       let estado = await Geolocation.checkPermissions();
-      
+
       if (estado.location !== 'granted') {
         // En iOS, necesitamos especificar el propósito en el info.plist
         estado = await Geolocation.requestPermissions();
       }
-      
+
       return estado;
     } catch (error) {
       console.error('Error verificando permisos:', error);
@@ -100,7 +118,7 @@ export class MapaPage implements OnInit {
       return await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 0
+        maximumAge: 0,
       });
     } catch (error) {
       console.error('Error obteniendo posición:', error);
@@ -110,7 +128,7 @@ export class MapaPage implements OnInit {
 
   // Resto del código permanece igual...
   private obtenerParametrosRuta() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.titulo = params['titulo'] || 'Evento Paranormal';
       this.ubicacion = params['ubicacion'] || 'Ubicación desconocida';
 
@@ -148,7 +166,7 @@ export class MapaPage implements OnInit {
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [centerLng, centerLat],
       zoom: 12,
-      accessToken: environment.mapboxAccessToken
+      accessToken: environment.mapboxAccessToken,
     });
 
     this.map.addControl(new mapboxgl.NavigationControl());
@@ -163,21 +181,25 @@ export class MapaPage implements OnInit {
   private agregarMarcadores() {
     new mapboxgl.Marker({ color: '#2E86C1' })
       .setLngLat([this.puntoActual.lng, this.puntoActual.lat])
-      .setPopup(new mapboxgl.Popup().setHTML(`
+      .setPopup(
+        new mapboxgl.Popup().setHTML(`
         <h3>Tu ubicación</h3>
         <p>Lat: ${this.puntoActual.lat.toFixed(4)}</p>
         <p>Lng: ${this.puntoActual.lng.toFixed(4)}</p>
-      `))
+      `)
+      )
       .addTo(this.map);
 
     new mapboxgl.Marker({ color: '#E74C3C' })
       .setLngLat([this.puntoEvento.lng, this.puntoEvento.lat])
-      .setPopup(new mapboxgl.Popup().setHTML(`
+      .setPopup(
+        new mapboxgl.Popup().setHTML(`
         <h3>${this.titulo}</h3>
         <p>${this.ubicacion}</p>
         <p>Lat: ${this.puntoEvento.lat.toFixed(4)}</p>
         <p>Lng: ${this.puntoEvento.lng.toFixed(4)}</p>
-      `))
+      `)
+      )
       .addTo(this.map);
   }
 
@@ -195,7 +217,7 @@ export class MapaPage implements OnInit {
           (this.map.getSource('ruta') as mapboxgl.GeoJSONSource).setData({
             type: 'Feature',
             geometry: route,
-            properties: {}
+            properties: {},
           });
         } else {
           this.map.addSource('ruta', {
@@ -203,8 +225,8 @@ export class MapaPage implements OnInit {
             data: {
               type: 'Feature',
               geometry: route,
-              properties: {}
-            }
+              properties: {},
+            },
           });
 
           this.map.addLayer({
@@ -213,13 +235,13 @@ export class MapaPage implements OnInit {
             source: 'ruta',
             layout: {
               'line-join': 'round',
-              'line-cap': 'round'
+              'line-cap': 'round',
             },
             paint: {
               'line-color': '#8E44AD',
               'line-width': 4,
-              'line-opacity': 0.7
-            }
+              'line-opacity': 0.7,
+            },
           });
         }
       }
@@ -235,7 +257,7 @@ export class MapaPage implements OnInit {
 
     this.map.fitBounds(bounds, {
       padding: 100,
-      maxZoom: 14
+      maxZoom: 14,
     });
   }
 

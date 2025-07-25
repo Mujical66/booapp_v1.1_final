@@ -36,7 +36,7 @@ import { ApiBooappService } from '../services/api-booapp.service';
 import { AuthService } from '../services/auth.service';
 import { addIcons } from 'ionicons';
 
-import { help, camera, trash, videocam, save } from 'ionicons/icons';
+import { help, camera, trash, videocam, save, document } from 'ionicons/icons';
 
 type CamposAyuda =
   | 'titulo'
@@ -106,7 +106,7 @@ export class EditarPage implements OnInit {
     private apiService: ApiBooappService,
     private authService: AuthService
   ) {
-    addIcons({ help, camera, trash, videocam, save });
+    addIcons({ help, camera, trash, videocam, document, save });
   }
 
   ngOnInit() {
@@ -366,7 +366,7 @@ export class EditarPage implements OnInit {
 
   // Agrega aquí los métodos recomendados
   tomarFoto() {
-    const input = document.createElement('input');
+    const input = window.document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = (event: any) => {
@@ -393,7 +393,7 @@ export class EditarPage implements OnInit {
 
   // Método para seleccionar el video
   seleccionarVideo() {
-    const input = document.createElement('input');
+    const input = window.document.createElement('input');
     input.type = 'file';
     input.accept = 'video/*,application/*';
     input.onchange = (event: any) => {

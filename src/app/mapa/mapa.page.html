@@ -12,7 +12,8 @@ VERSION: 1.0.0
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/list-mapa-ruta"></ion-back-button>
     </ion-buttons>
-    <ion-title>Geolocalización de Ruta</ion-title>
+    <ion-title class="titulo1">Geolocalización de</ion-title>
+    <ion-title class="titulo2">Evento Paranormal</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -26,12 +27,15 @@ VERSION: 1.0.0
       <p><strong>Latitud:</strong> {{ latitud }}</p>
       <p><strong>Longitud:</strong> {{ longitud }}</p>
       <p><strong>Ubicación:</strong> {{ ubicacion }}</p>
-
     </ion-card-content>
   </ion-card>
 
-  <ion-alert [isOpen]="showPermissionAlert" header="Permisos de ubicación requeridos"
+  <ion-alert
+    [isOpen]="showPermissionAlert"
+    header="Permisos de ubicación requeridos"
     message="La aplicación necesita acceso a tu ubicación para mostrarte la ruta al evento. Por favor, concede los permisos en la configuración de tu dispositivo."
-    [buttons]="['OK']" (didDismiss)="onPermissionAlertDismiss()">
+    [buttons]="['OK']"
+    (didDismiss)="onPermissionAlertDismiss()"
+  >
   </ion-alert>
 </ion-content>

@@ -1,13 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <img src="assets/banner-login.jpg" alt="Logo App" class="banner-image" />
+    <img
+      src="../../assets/imgSvg/Home.svg"
+      alt="Logo App"
+      class="banner-image"
+    />
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Bienvenido Registrarse</ion-card-title>
+      <ion-card-title>Regístrate aquí</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -40,7 +44,7 @@
 
       <!-- Foto de Perfil -->
       <div class="photo-container">
-        <p>Foto de Perfil:</p>
+        <p>Foto de Perfil (Opcional):</p>
         <img
           *ngIf="nuevoUsuario.fotoPerfil"
           [src]="nuevoUsuario.fotoPerfil"

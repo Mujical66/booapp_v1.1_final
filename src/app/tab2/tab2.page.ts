@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
@@ -13,10 +13,13 @@ import {
   IonButton,
   IonIcon,
   IonSpinner,
+  IonButtons,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiBooappService } from '../services/api-booapp.service';
+import { addIcons } from 'ionicons';
+import { exit, help, chevronBackOutline, warningOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab2',
@@ -39,6 +42,7 @@ import { ApiBooappService } from '../services/api-booapp.service';
     NgFor,
     IonIcon,
     IonSpinner,
+    IonButtons,
   ],
 })
 export class Tab2Page implements OnInit {
@@ -46,15 +50,22 @@ export class Tab2Page implements OnInit {
   eventosActivos: any[] = []; // Nueva propiedad para almacenar solo eventos activos
   public cargandor: boolean = true;
   mensajeNoResultados: string = ''; // Mensaje cuando no hay eventos activos
+  cargando: boolean = true;
 
-  constructor(private apiService: ApiBooappService, private router: Router) {}
+  constructor(
+    private apiService: ApiBooappService,
+    private router: Router,
+    private location: Location
+  ) {
+    addIcons({ chevronBackOutline, warningOutline, exit, help });
+  }
 
   ngOnInit(): void {
     this.llenarDatos();
   }
 
   llenarDatos() {
-    this.cargandor = true;
+    this.cargando = true;
     this.apiService.getData().subscribe({
       next: (response) => {
         setTimeout(() => {
@@ -73,6 +84,7 @@ export class Tab2Page implements OnInit {
 
           console.log('Eventos activos obtenidos:', this.eventosActivos);
         }, 1000);
+        this.cargando = false; // Finaliza la carga (éxito)
       },
       error: (error) => {
         this.cargandor = false;
@@ -98,5 +110,10 @@ export class Tab2Page implements OnInit {
     setTimeout(() => {
       this.cargandor = false;
     }, 2000);
+  }
+
+  volverATab1() {
+    this.location.back();
+    // this.router.navigate(['/tabs/tab1']);
   }
 }

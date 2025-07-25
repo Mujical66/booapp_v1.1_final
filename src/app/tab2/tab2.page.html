@@ -1,6 +1,12 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Rutas Paranormales</ion-title>
+    <ion-buttons slot="start" style="margin-left: 20px">
+      <ion-button (click)="volverATab1()" class="exit-button">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="titulo1">Rutas</ion-title>
+    <ion-title class="titulo2">Paranormales</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -68,8 +74,8 @@
   </div>
 
   <!-- Spinner de carga -->
-  <div *ngIf="cargandor" class="spinner-container">
-    <ion-spinner name="bubbles"></ion-spinner>
-    <div class="spinner-title">Cargando eventos activos...</div>
+  <div *ngIf="cargandor" class="cargando-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <div class="cargando-texto">Cargando...</div>
   </div>
 </ion-content>

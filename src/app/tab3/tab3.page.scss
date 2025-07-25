@@ -1,8 +1,91 @@
+// Inicio de Nuevos Ajustes de Estilo para Tab1 - 24-07-2025
+// Importa las fuentes personalizadas
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url("../../assets/fonts/OpenSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SansSerifFLF";
+  src: url("../../assets/fonts/SansSerifFLF.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SansSerifBldFLF";
+  src: url("../../assets/fonts/SansSerifBldFLF.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SUNDEL";
+  src: url("../../assets/fonts/SUNDEL.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.titulo1 {
+  font-family: "SansSerifFLF", "SansSerifBldFLF", "OpenSans-Regular", Arial,
+    sans-serif !important;
+  text-align: center;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-weight: bold;
+  color: white; // var(--ion-color-primary);
+  margin: 0 0 2px 0; // Menor separación inferior
+  line-height: 1.2;
+  padding-top: 2px;
+  margin-top: 0.5em;
+}
+
+.titulo2 {
+  font-family: "SansSerifFLF", "SansSerifBldFLF", "OpenSans-Regular", Arial,
+    Arial, sans-serif !important;
+  text-align: center;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-weight: bold;
+  color: white; // var(--ion-color-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  padding-top: 0px;
+  margin-top: 0.2em; // Menor separación superior respecto al título 1
+}
+
+.titulo1-linea {
+  font-family: "SansSerifFLF", "SansSerifBldFLF", "OpenSans-Regular", Arial,
+    Arial, sans-serif !important;
+  text-align: center;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-weight: bold;
+  color: white; // var(--ion-color-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.5;
+  padding-top: 20px;
+  margin-top: 0.2em; // Menor separación superior respecto al título 1
+}
+
+.titulo2-linea {
+  font-family: "SansSerifFLF", "SansSerifBldFLF", "OpenSans-Regular", Arial,
+    Arial, sans-serif !important;
+  text-align: center;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-weight: bold;
+  color: white; // var(--ion-color-primary);
+  margin: 0 0 4px 0;
+  line-height: 1.5;
+  padding-top: 0px;
+  margin-top: 0.2em; // Menor separación superior respecto al título 1
+}
+
+// Fin de Nuevos Ajustes de Estilo para Tab1 - 23-07-2025
+
 ion-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 0;
 
   --background: var(--color-menu);
   --color: #ffffff;
@@ -21,8 +104,8 @@ ion-title {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 7.5rem;
-  height: 7.5rem;
+  width: 13rem;
+  height: 13rem;
   border-radius: 6.25rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 3.75rem auto;
@@ -30,8 +113,8 @@ ion-title {
 }
 
 .whatsapp-icon {
-  width: 5.75rem;
-  height: 5.75rem;
+  width: 9.75rem;
+  height: 9.75rem;
 }
 
 .whatsapp-icon:hover {
@@ -43,4 +126,49 @@ ion-title {
   margin-top: 1rem;
   font-size: 1.19rem;
   text-align: center;
+}
+
+.exit-button {
+  --background: white; /* Fondo blanco */
+  --color: var(--color-menu); /* Color azul del tema */
+  --border-radius: 50%; /* Forma redonda */
+  --padding: 1rem; /* Espaciado interno */
+  width: 2.5rem; /* Tamaño fijo */
+  height: 2.5rem; /* Tamaño fijo */
+  margin-right: 1rem; /* Espaciado derecho */
+
+  ion-icon {
+    font-size: 1.5rem; /* Tamaño del icono */
+  }
+
+  /* Efecto al presionar */
+  &:active {
+    opacity: 0.8;
+  }
+
+  /* Sombra para mejor visibilidad */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flecha-indicar {
+  display: block;
+  margin: 20px auto 24px auto; // margen arriba y abajo para separación
+  width: 80px; // tamaño base
+  max-width: 25vw; // nunca más del 25% del ancho de la pantalla
+  height: auto; // mantiene la proporción
+}
+
+.titulo1-linea,
+.titulo2-linea {
+  color: #000; // Color negro por defecto (modo claro)
+}
+
+@media (prefers-color-scheme: dark) {
+  .titulo1-linea,
+  .titulo2-linea {
+    color: var(
+      --text-color,
+      #fff
+    ); // Usa el color actual configurado para modo oscuro
+  }
 }

@@ -1,16 +1,17 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" style="margin-right: 20px">
       <ion-button (click)="salir()" fill="clear" class="exit-button">
         <ion-icon slot="icon-only" name="exit"></ion-icon>
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Gestión de Eventos</ion-title>
+    <ion-title class="titulo1">Gestión de</ion-title>
+    <ion-title class="titulo2">Eventos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar class="toolbar-azul-oscuro">
       <ion-title size="large">Eventos Paranormales</ion-title>
@@ -91,11 +92,20 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <div *ngIf="!cargando && data && data.length === 0">
+
+<!-- Mensaje cuando no hay datos -->
+<div *ngIf="!cargando && data && data.length === 0" class="empty-state-container">
+  <div class="empty-state-content">
     No hay datos para mostrar.
   </div>
-  <div *ngIf="cargando" class="spinner-container">
+</div>
+
+<!-- Spinner de carga -->
+<div *ngIf="cargando" class="spinner-container">
+  <div class="spinner-content">
     <ion-spinner name="bubbles"></ion-spinner>
     <div class="spinner-title">Cargando datos desde la API...</div>
   </div>
+</div>
+
 </ion-content>

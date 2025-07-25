@@ -156,7 +156,7 @@ export class RegistroPage implements OnInit {
 
   onImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/noimagen.png';
+    imgElement.src = 'assets/imgNoFoto.png'; // Ruta de la imagen por defecto';
   }
 
   async retornar() {
@@ -165,7 +165,7 @@ export class RegistroPage implements OnInit {
 
   private async loadDefaultPhoto(): Promise<string> {
     // Usamos fetch para leer el archivo y convertirlo a base64
-    const res = await fetch('assets/vacia.jpg');
+    const res = await fetch('assets/imgNoFoto.png');
     const blob = await res.blob();
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();

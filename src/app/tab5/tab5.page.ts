@@ -22,12 +22,21 @@ import {
   IonAvatar,
   IonList,
   IonToast,
+  IonButtons,
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import {
+  exit,
+  help,
+  chevronBackOutline,
+  warningOutline,
+  camera,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab5',
@@ -52,6 +61,7 @@ import { IonIcon } from '@ionic/angular/standalone';
     IonList,
     IonToast,
     IonIcon,
+    IonButtons,
   ],
 })
 export class Tab5Page implements OnInit {
@@ -69,12 +79,20 @@ export class Tab5Page implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private alertController: AlertController,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private location: Location
+  ) {
+    addIcons({ chevronBackOutline, camera, warningOutline, exit, help });
+  }
 
   ngOnInit() {
     this.usuarioActual = this.authService.getUsuarioActual();
     this.initForm();
+  }
+
+  volverATab1() {
+    this.location.back();
+    // this.router.navigate(['/tabs/tab1']);
   }
 
   initForm() {
