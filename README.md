@@ -1,2 +1,3 @@
 # BooApp
-## Aplicación Móvil en Proceso de Desarrollo
+## Aplicación Móvil finalizada en la Version 1.1.
+## puesta en producción.
