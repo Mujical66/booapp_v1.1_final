@@ -75,7 +75,7 @@ ion-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 0;
 
   --background: var(--color-menu);
   --color: #ffffff;
@@ -134,4 +134,26 @@ ion-content {
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border-radius: 0.75rem;
+}
+
+.exit-button {
+  --background: white; /* Fondo blanco */
+  --color: var(--color-menu); /* Color azul del tema */
+  --border-radius: 50%; /* Forma redonda */
+  --padding: 1rem; /* Espaciado interno */
+  width: 2.5rem; /* Tamaño fijo */
+  height: 2.5rem; /* Tamaño fijo */
+  margin-right: 1rem; /* Espaciado derecho */
+
+  ion-icon {
+    font-size: 1.5rem; /* Tamaño del icono */
+  }
+
+  /* Efecto al presionar */
+  &:active {
+    opacity: 0.8;
+  }
+
+  /* Sombra para mejor visibilidad */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

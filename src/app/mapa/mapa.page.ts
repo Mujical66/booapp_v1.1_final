@@ -2,16 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar,
-  IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-  IonButtons, IonBackButton, IonAlert
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonButtons,
+  IonBackButton,
+  IonAlert,
+  IonButton,
+  IonIcon,
 } from '@ionic/angular/standalone';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as mapboxgl from 'mapbox-gl';
 import { Geolocation, PermissionStatus } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
 import { addIcons } from 'ionicons';
 import { exit, help, chevronBackOutline, warningOutline } from 'ionicons/icons';
+import { AuthService } from '../services/auth.service';
+import { AlertController } from '@ionic/angular'; // Agrega esta importación
 
 @Component({
   selector: 'app-mapa',
@@ -27,11 +39,13 @@ import { exit, help, chevronBackOutline, warningOutline } from 'ionicons/icons';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
+    IonButton,
     IonButtons,
     IonBackButton,
     IonAlert,
     CommonModule,
     FormsModule,
+    IonIcon,
   ],
 })
 export class MapaPage implements OnInit {
@@ -54,13 +68,45 @@ export class MapaPage implements OnInit {
   puntoActual = { lat: 0, lng: 0 };
   puntoEvento = { lat: 0, lng: 0 };
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private router: Router,
+    private alertController: AlertController // Inyecta AlertController
+  ) {
     addIcons({ chevronBackOutline, warningOutline, exit, help });
   }
 
   async ngOnInit() {
     await this.obtenerUbicacionActual();
     this.obtenerParametrosRuta();
+  }
+
+  async salir() {
+    const usuario = this.authService.getUsuarioActual();
+    const alert = await this.alertController.create({
+      cssClass: 'custom-alert',
+      header: usuario ? 'Cerrar sesión' : 'Salir al inicio',
+      message: usuario ? '¿Desea cerrar su sesión?' : '¿Desea salir al inicio?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'cancel-button',
+        },
+        {
+          text: 'Sí',
+          cssClass: 'exit-button',
+          handler: () => {
+            if (usuario) {
+              this.authService.cerrarSesion();
+            }
+            this.router.navigate(['/home']);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   private async obtenerUbicacionActual() {

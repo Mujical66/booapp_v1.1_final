@@ -12,6 +12,11 @@ VERSION: 1.0.0
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/list-mapa-ruta"></ion-back-button>
     </ion-buttons>
+        <ion-buttons slot="end" style="margin-right: 20px">
+      <ion-button (click)="salir()" class="exit-button">
+        <ion-icon slot="icon-only" name="exit"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title class="titulo1">Geolocalización de</ion-title>
     <ion-title class="titulo2">Evento Paranormal</ion-title>
   </ion-toolbar>
